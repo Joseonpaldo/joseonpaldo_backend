@@ -6,9 +6,9 @@ spring:
     name: joseonpaldo
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://(dbip)/(dbschema)?serverTimezone=Asia/Seoul
-    username: 
-    password: 
+    url: jdbc:mysql://db-n9jfu-kr.vpc-pub-cdb.ntruss.com/joseonpaldo?serverTimezone=Asia/Seoul
+    username: joseonpaldo
+    password: bitcamp!@#123
   jpa:
     hibernate:
       ddl-auto: update

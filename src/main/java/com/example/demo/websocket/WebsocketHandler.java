@@ -15,8 +15,7 @@ public class WebsocketHandler implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(gameHandler, "/game/{room}").setAllowedOrigins("http://localhost:3000",
-                "http://localhost:8080");
+        registry.addHandler(gameHandler, "/game/{room}").setAllowedOrigins("http://localhost:3000");
     }
 
 }
