@@ -2,6 +2,7 @@ package com.example.demo.data.contoller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.data.entity.GameRoomEntity;
 import com.example.demo.data.entity.UserEntity;
 import com.example.demo.data.service.MainService;
 
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class MainRestController {
     final private MainService service;
 
+    // USER
     @GetMapping("/user")
     public UserEntity getUser(@RequestParam("user_id") Long user_id) {
         return service.readUser(user_id);
@@ -44,4 +46,11 @@ public class MainRestController {
     public void deleteUser(@PathVariable("id") Long user_id) {
         service.deleteUser(user_id);
     }
+
+    // GameRoom
+    @PostMapping("/game/room")
+    public void postMethodName(@RequestBody GameRoomEntity entity) {
+        service.createGR(entity);
+    }
+
 }
