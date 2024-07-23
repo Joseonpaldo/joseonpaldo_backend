@@ -3,7 +3,7 @@ package com.example.demo.data.contoller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.data.entity.UserEntity;
-import com.example.demo.service.MainService;
+import com.example.demo.data.service.MainService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
-@RequestMapping("/rest")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class MainRestController {
     final private MainService service;
@@ -33,9 +33,11 @@ public class MainRestController {
     }
 
     @PutMapping("/user/{id}")
-    public void putUser(@PathVariable("id") Long user_id, @RequestBody UserEntity entity) {
+    public void updateNickname(@PathVariable("id") Long user_id, @RequestParam("nickname") String nickname) {
+        UserEntity entity = service.readUser(user_id);
         entity.setUser_id(user_id);
-        service.updateUser(entity);
+        entity.setNickname(nickname);
+        service.updateUserNickname(entity);
     }
 
     @DeleteMapping("/user/{id}")

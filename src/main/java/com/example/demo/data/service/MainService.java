@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.data.service;
 
 import org.springframework.stereotype.Service;
 
@@ -35,8 +35,24 @@ public class MainService {
     }
 
     // UPDATE
-    public void updateUser(UserEntity entity) {
-        userRepo.updateUser(entity);
+    public void updateUserNickname(UserEntity entity) {
+        userRepo.updateUserNickname(entity);
+    }
+
+    public void updatePlayCount(Long user_id, String gameType) {
+        if (gameType == "2p") {
+            userRepo.updateUser2pTotCount(user_id);
+        } else {
+            userRepo.updateUser4pTotCount(user_id);
+        }
+    }
+
+    public void updateWinCount(Long user_id, String gameType) {
+        if (gameType == "2p") {
+            userRepo.updateUser2pWinCount(user_id);
+        } else {
+            userRepo.updateUser4pWinCount(user_id);
+        }
     }
 
     // Delete
