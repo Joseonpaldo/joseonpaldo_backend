@@ -52,5 +52,4 @@ public class MainRestController {
     public void postMethodName(@RequestBody GameRoomEntity entity) {
         service.createGR(entity);
     }
-
 }
