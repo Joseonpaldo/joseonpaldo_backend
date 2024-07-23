@@ -6,7 +6,7 @@ spring:
     name: joseonpaldo
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://(dbip)/(dbschema)?serverTimezone=Asia/Seoul
+    url: 
     username: 
     password: 
   jpa:
