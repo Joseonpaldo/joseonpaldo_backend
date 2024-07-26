@@ -54,7 +54,7 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         password: ${{ secrets.SERVER_PASSWORD }}
         script: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/spring-boot-app:${{ github.sha }}
+          docker pull themerous/spring-boot-app:${{ github.sha }}
           docker stop spring-boot-app || true
           docker rm spring-boot-app || true
-          docker run -d -p 80:8080 --name spring-boot-app ${{ secrets.DOCKER_USERNAME }}/spring-boot-app:${{ github.sha }}
+          docker run -d -p 80:8080 --name spring-boot-app themerous/spring-boot-app:${{ github.sha }}
