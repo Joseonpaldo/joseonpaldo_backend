@@ -44,8 +44,8 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/spring-boot-app:${{ github.sha }} .
-        docker push ${{ secrets.DOCKER_USERNAME }}/spring-boot-app:${{ github.sha }}
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/spring-boot-app:latest .
+        docker push ${{ secrets.DOCKER_USERNAME }}/spring-boot-app:latest
 
     - name: SSH into server and deploy
       uses: appleboy/ssh-action@v0.1.6
@@ -54,7 +54,7 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         password: ${{ secrets.SERVER_PASSWORD }}
         script: |
-          docker pull themerous/spring-boot-app:${{ github.sha }}
+          docker pull ${{ secrets.DB_USERNAME }}/spring-boot-app:latest
           docker stop spring-boot-app || true
           docker rm spring-boot-app || true
-          docker run -d -p 80:8080 --name spring-boot-app themerous/spring-boot-app:${{ github.sha }}
+          docker run -d -p 80:8080 --name spring-boot-app ${{ secrets.DB_USERNAME }}/spring-boot-app:latest
