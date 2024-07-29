@@ -7,7 +7,7 @@ on:
 env:
   DB_URL: ${{ secrets.DB_URL }}
   DB_USERNAME: ${{ secrets.DB_USERNAME }}
-  DB_PASSWORD=\: ${{ secrets.DB_PASSWORD }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
 jobs:
   build:
@@ -40,7 +40,7 @@ jobs:
         run: chmod +x gradlew
           
       - name: Build with Gradle
-        run: ./gradlew build --info
+        run: ./gradlew build
 
       - name: Create .env file
         run: |
