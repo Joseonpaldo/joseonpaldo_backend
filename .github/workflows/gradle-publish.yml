@@ -12,19 +12,19 @@ jobs:
       contents: read
       packages: write
 
+
     steps: 
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Create .env file
         run: |
-          echo DB_URL=${{ secrets.DB_URL }} > .env
-          echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
-          echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
-        env: |
-          DB_URL: 
-          DB_USERNAME: 
-          DB_PASSWORD: 
+          echo "DB_URL=${{ secrets.DB_URL }}" > .env
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+
+      - name: Print .env file
+        run: cat .env
     
       - name: Get Hash
         id: get_hash
