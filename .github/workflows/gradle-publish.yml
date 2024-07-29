@@ -23,10 +23,9 @@ jobs:
       
       - name: Create .env file
         run: |
-          mkdir -p build
-          echo "DB_URL=${{ secrets.DB_URL }}" > build/.env
-          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> build/.env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> build/.env
+          echo "DB_URL=${{ secrets.DB_URL }}" > .env
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
     
       - name: Get Hash
         id: get_hash
