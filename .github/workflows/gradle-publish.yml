@@ -43,18 +43,18 @@ jobs:
         run: ./gradlew build --info
 
       - name: Login to Docker registry(naver)
-          uses: docker/login-action@v1
-          with:
-            registry: ${{ secrets.REGISTRY_URL }}
-            username: ${{ secrets.NAVER_ACESSKEY }}
-            password: ${{ secrets.NAVER_SECRETKEY }}
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ secrets.REGISTRY_URL }}
+          username: ${{ secrets.NAVER_ACESSKEY }}
+          password: ${{ secrets.NAVER_SECRETKEY }}
 
       - name: Build and push Docker image
-          uses: docker/build-push-action@v3
-          with:
-            context: .
-            push: true
-            tags: ${{ secrets.REGISTRY_URL }}/joseonpaldo-boot:${{ env.COMMIT_HASH }}
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.REGISTRY_URL }}/joseonpaldo-boot:${{ env.COMMIT_HASH }}
 
       - name: SSH and deploy
         uses: appleboy/ssh-action@master
