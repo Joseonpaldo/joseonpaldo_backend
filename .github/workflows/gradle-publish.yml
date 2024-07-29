@@ -18,9 +18,13 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo DB_URL=${{ secrets.DB_URL }} > .env
-          echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
-          echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
+          echo DB_URL=$DB_URL > .env
+          echo DB_USERNAME=$DB_USERNAME >> .env
+          echo DB_PASSWORD=$DB_PASSWORD >> .env
+        env: |
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
     
       - name: Get Hash
         id: get_hash
