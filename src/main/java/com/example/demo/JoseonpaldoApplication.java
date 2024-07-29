@@ -14,5 +14,4 @@ public class JoseonpaldoApplication {
 		System.setProperty("DB_URL", dotenv.get("DB_URL"));
 		SpringApplication.run(JoseonpaldoApplication.class, args);
 	}
-
 }
