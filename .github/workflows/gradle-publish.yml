@@ -20,6 +20,13 @@ jobs:
     steps: 
       - name: Checkout code
         uses: actions/checkout@v4
+      
+      - name: Create .env file
+        run: |
+          mkdir -p build
+          echo "DB_URL=${{ secrets.DB_URL }}" > build/.env
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> build/.env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> build/.env
     
       - name: Get Hash
         id: get_hash
@@ -41,13 +48,6 @@ jobs:
           
       - name: Build with Gradle
         run: ./gradlew build
-
-      - name: Create .env file
-        run: |
-          mkdir -p build
-          echo "DB_URL=${{ secrets.DB_URL }}" > build/.env
-          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> build/.env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> build/.env
 
       - name: Login to Docker registry(naver)
         uses: docker/login-action@v1
