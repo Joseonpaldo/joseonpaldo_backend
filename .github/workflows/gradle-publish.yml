@@ -74,12 +74,6 @@ jobs:
             docker login -u ${{ secrets.NAVER_ACESSKEY }} -p ${{ secrets.NAVER_SECRETKEY }} ${{ secrets.REGISTRY_URL }}
             docker pull ${{ secrets.REGISTRY_URL }}/joseonpaldo-boot:${{ env.COMMIT_HASH }}
 
-            
-              if docker container inspect joseonpaldo-backend-1 >/dev/null 2>&1; then
-                docker stop joseonpaldo-backend-1 || true
-                docker rm joseonpaldo-backend-1 || true
-              fi
-
             if [ "$(docker ps -q -f name=joseonpaldo-backend-1)" ]; then
               docker run -d -p 8081:8080 --name joseonpaldo-backend-2 ${{ secrets.REGISTRY_URL }}/joseonpaldo-boot:${{ env.COMMIT_HASH }}
 
@@ -93,7 +87,7 @@ jobs:
               fi
             else
               docker run -d -p 8080:8080 --name joseonpaldo-backend-1 ${{ secrets.REGISTRY_URL }}/joseonpaldo-boot:${{ env.COMMIT_HASH }}
-              
+
               if curl -s http://localhost:8080/health | grep "OK"; then
                 sudo iptables -t nat -D PREROUTING -p tcp --dport 8080 -j REDIRECT --to-port 8081
                 docker stop joseonpaldo-backend-2 || true
