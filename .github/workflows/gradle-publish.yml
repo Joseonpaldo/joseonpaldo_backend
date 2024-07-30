@@ -69,8 +69,6 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            set -e
-
             docker login -u ${{ secrets.NAVER_ACESSKEY }} -p ${{ secrets.NAVER_SECRETKEY }} ${{ secrets.REGISTRY_URL }}
             docker pull ${{ secrets.REGISTRY_URL }}/joseonpaldo-boot:${{ env.COMMIT_HASH }}
 
