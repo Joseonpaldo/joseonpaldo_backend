@@ -71,7 +71,7 @@ jobs:
           script: |
             docker login -u ${{ secrets.NAVER_ACESSKEY }} -p ${{ secrets.NAVER_SECRETKEY }} ${{ secrets.REGISTRY_URL }}
             docker pull ${{ secrets.REGISTRY_URL }}/joseonpaldo-boot:${{ env.COMMIT_HASH }}
-g
+
             if [ "$(docker ps -q -f name=joseonpaldo-backend-1)" ]; then
               docker run -d -p 8081:8080 --name joseonpaldo-backend-2 ${{ secrets.REGISTRY_URL }}/joseonpaldo-boot:${{ env.COMMIT_HASH }}
               sudo iptables -t nat -A PREROUTING -p tcp --dport 8080 -j REDIRECT --to-port 8081
