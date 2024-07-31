@@ -50,6 +50,7 @@ jobs:
 
       - name: Set up Naver CLI
         run: |
+          cd ~
           curl -L https://www.ncloud.com/api/support/download/files/cli/CLI_1.1.20_20240620.zip -o CLI_1.1.20_20240620.zip
           unzip CLI_1.1.20_20240620.zip
           cd ./CLI_1.1.20_20240620/cli_linux
@@ -61,7 +62,6 @@ jobs:
       
       - name: Add ACG rule for deploy server
         run: |
-          ls -al
           cd ~/CLI_1.1.20_20240620/cli_linux
           ./ncloud vserver addAccessControlGroupInboundRule --regionCode KR --vpcNo {{ secrets.NAVER_VPC }} --accessControlGroupNo {{ secrets.NAVER_ACG_NO }} --accessControlGroupRuleList "protocolTypeCode='TCP', ipBlock='${{ env.PUBLIC_IP }}/32', portRange='22'"
 
