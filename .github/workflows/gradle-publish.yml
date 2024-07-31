@@ -20,6 +20,12 @@ jobs:
     steps: 
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Get public IP address
+        id: get_ip
+        run: |
+          PUBLIC_IP=$(curl -s https://api.ipify.org)
+          echo "PUBLIC_IP=$PUBLIC_IP" >> $GITHUB_ENV
       
       - name: Create .env file
         run: |
@@ -41,6 +47,25 @@ jobs:
           
       - name: Verify Java version
         run: java -version
+
+      - name: Set up Naver CLI
+        env: 
+          NAVER_ACESSKEY: ${{ secrets.NAVER_ACESSKEY }}
+          NAVER_SECRETKEY: ${{ secrets.NAVER_SECRETKEY }}
+        run: |
+          curl -L -o ncloudCLI.zip https://www.ncloud.com/api/support/download/files/cli/CLI_1.1.20_20240620.zip
+          unzip ncloudCLI.zip
+          cd ./ncloudCLI/cli_linux
+          chmod +x ncoud
+          echo "$NAVER_ACESSKEY" > input.txt
+          echo "$NAVER_SECRETKEY" >> input.txt
+          echo "" >> input.txt
+          cat input.txt | ./ncloud configure
+      
+      - name: Add ACG rule for deploy server
+        run: |
+          cd ~/cli_linux
+          ./ncloud vserver addAccessControlGroupInboundRule --regionCode KR --vpcNo {{ secrets.NAVER_VPC }} --accessControlGroupNo {{ secrets.NAVER_ACG_NO }} --accessControlGroupRuleList "protocolTypeCode='TCP', ipBlock='${{ env.PUBLIC_IP }}/32', portRange='22'"
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -82,3 +107,8 @@ jobs:
               docker rm joseonpaldo-backend-2 || true
             fi
             docker images --format '{{.Repository}}:{{.Tag}}' | grep joseonpaldo-boot | grep -v "${{ env.COMMIT_HASH }}" | xargs -r docker rmi || true
+
+      - name: Remove ACG inbound rule created
+        run: |
+          cd ~/cli_linux
+          ./ncloud vserver removeAccessControlGroupInboundRule --regionCode KR --vpcNo {{ secrets.NAVER_VPC }} --accessControlGroupNo {{ secrets.NAVER_ACG_NO }} --accessControlGroupRuleList "protocolTypeCode='TCP', ipBlock='${{ env.PUBLIC_IP }}/32', portRange='22'"
