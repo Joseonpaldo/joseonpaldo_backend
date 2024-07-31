@@ -53,10 +53,10 @@ jobs:
           NAVER_ACESSKEY: ${{ secrets.NAVER_ACESSKEY }}
           NAVER_SECRETKEY: ${{ secrets.NAVER_SECRETKEY }}
         run: |
-          curl https://www.ncloud.com/api/support/download/files/cli/CLI_1.1.20_20240620.zip
+          curl -L https://www.ncloud.com/api/support/download/files/cli/CLI_1.1.20_20240620.zip -o CLI_1.1.20_20240620.zip
           unzip CLI_1.1.20_20240620.zip
           cd ./CLI_1.1.20_20240620/cli_linux
-          chmod +x ncoud
+          chmod +x ncloud
           echo "$NAVER_ACESSKEY" > input.txt
           echo "$NAVER_SECRETKEY" >> input.txt
           echo "" >> input.txt
