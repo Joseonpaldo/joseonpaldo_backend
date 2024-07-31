@@ -49,21 +49,19 @@ jobs:
         run: java -version
 
       - name: Set up Naver CLI
-        env: 
-          NAVER_ACESSKEY: ${{ secrets.NAVER_ACESSKEY }}
-          NAVER_SECRETKEY: ${{ secrets.NAVER_SECRETKEY }}
         run: |
           curl -L https://www.ncloud.com/api/support/download/files/cli/CLI_1.1.20_20240620.zip -o CLI_1.1.20_20240620.zip
           unzip CLI_1.1.20_20240620.zip
           cd ./CLI_1.1.20_20240620/cli_linux
           chmod +x ncloud
-          echo "$NAVER_ACESSKEY" > input.txt
-          echo "$NAVER_SECRETKEY" >> input.txt
+          echo "${{ secrets.NAVER_ACESSKEY }}" > input.txt
+          echo "${{ secrets.NAVER_SECRETKEY }}" >> input.txt
           echo "" >> input.txt
           cat input.txt | ./ncloud configure
       
       - name: Add ACG rule for deploy server
         run: |
+          ls -al
           cd ~/CLI_1.1.20_20240620/cli_linux
           ./ncloud vserver addAccessControlGroupInboundRule --regionCode KR --vpcNo {{ secrets.NAVER_VPC }} --accessControlGroupNo {{ secrets.NAVER_ACG_NO }} --accessControlGroupRuleList "protocolTypeCode='TCP', ipBlock='${{ env.PUBLIC_IP }}/32', portRange='22'"
 
