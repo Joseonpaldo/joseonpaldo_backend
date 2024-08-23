@@ -37,24 +37,29 @@ public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
 
         if(oauth2ClientName.equals("kakao")){
             Map<String, Object> attributes = new HashMap<>(oAuth2User.getAttributes());   // attributes는 읽기전용 해쉬맵 -> 해쉬맵 복사후 추출
-            Map<String, String> kakao_account = (Map<String, String>) attributes.get("kakao_account");  // email이 들어있는 부분
-            Map<String, String> properties = (Map<String, String>) attributes.get("properties");        // profile_image들어있는 부분
+            Map<String, String> kakao_account = new HashMap<>();
+            var obEmail =  attributes.get("kakao_account");  // email이 들어있는 부분
+            kakao_account.put("email", obEmail.toString());
+            Map<String, String> properties = new HashMap<>();
+            var obPro = attributes.get("properties");        // profile_image들어있는 부분
+            properties.put("profile_image", obPro.toString());
 
             user_identify_id = attributes.get("id").toString();
             email = kakao_account.get("email");
             profile = properties.get("profile_image");
             social_provider = "kakao";
         }
-        else if(oauth2ClientName.equals("naver")){
-            //네이버는 알아서 map형식으로 return 시켜줌
-            Map<String, String> responesMap = (Map<String, String>) oAuth2User.getAttributes().get("response");
-            System.out.println(oAuth2User.getAttributes());
-
-            user_identify_id = responesMap.get("id").substring(0, 14);
-            email = responesMap.get("email");
-            profile = responesMap.get("profile_image");
-            social_provider = "naver";
-        }
+//        else if(oauth2ClientName.equals("naver")){
+//            //네이버는 알아서 map형식으로 return 시켜줌
+//            Map<String, String> responesMap = new HashMap<>();
+//                    oAuth2User.getAttributes().get("response");
+//            System.out.println(oAuth2User.getAttributes());
+//
+//            user_identify_id = responesMap.get("id").substring(0, 14);
+//            email = responesMap.get("email");
+//            profile = responesMap.get("profile_image");
+//            social_provider = "naver";
+//        }
         else if(oauth2ClientName.equals("google")){
             Map<String, Object> attributes = oAuth2User.getAttributes();
 
