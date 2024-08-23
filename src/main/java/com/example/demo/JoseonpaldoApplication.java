@@ -16,6 +16,7 @@ public class JoseonpaldoApplication {
 		System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
 		System.setProperty("DB_URL", dotenv.get("DB_URL"));
 		System.setProperty("JWT_SECRET_KEY", dotenv.get("JWT_SECRET_KEY"));
+		System.setProperty("BASE_URL", dotenv.get("BASE_URL"));
 		SpringApplication.run(JoseonpaldoApplication.class, args);
 	}
 }
