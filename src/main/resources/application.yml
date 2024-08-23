@@ -28,14 +28,14 @@ spring:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_SECRET}
             scope: profile, email
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            redirect-uri: "{baseUrl}/api/login/oauth2/code/{registrationId}"
             client-name: google
           kakao:
             client-name: kakao
             client-id: 6ce6517c567f17b65e53fe4af7b78860
             client-secret: pHTaAAtLNUSo1NPlML5xV40FpCA9Vd4k
             authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            redirect-uri: "{baseUrl}/api/login/oauth2/code/{registrationId}"
             client-authentication-method: client_secret_post
             scope:
               - profile_nickname
@@ -46,7 +46,7 @@ spring:
             client-id: m7BS6vQENr3z2505BGS7  # 앱키 -> REST API 키
             client-secret: I4C_Qg10fI # 네이버 로그인 -> 보안 -> Client Secret 코드
             authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}" # yml 파일에서 {} 가 spring 특수문자로 인식되게 하기 위해 " " 사용
+            redirect-uri: "{baseUrl}/api/login/oauth2/code/{registrationId}" # yml 파일에서 {} 가 spring 특수문자로 인식되게 하기 위해 " " 사용
             scope:
               - name
               - email
