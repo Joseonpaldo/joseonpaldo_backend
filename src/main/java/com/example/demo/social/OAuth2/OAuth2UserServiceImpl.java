@@ -21,9 +21,12 @@ public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
+        System.out.println("User attributes : "+oAuth2User.getAttributes());
 
         String oauth2ClientName = userRequest.getClientRegistration().getClientName();
         String providerAccessToken = userRequest.getAccessToken().getTokenValue();
+
+        System.out.println(" aT : "+providerAccessToken);
 
         UserEntity userEntity;
         String user_identify_id = null;
