@@ -29,6 +29,7 @@ public class UserService {
             userRepo.createUser(entity);
         }else{
             entity.setUser_id(user.getUser_id());
+            userRepo.createUser(entity);
         }
         return entity.getUser_id();
     }
