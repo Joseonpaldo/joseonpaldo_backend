@@ -51,8 +51,7 @@ public class SecurityConfig {
                         .userInfoEndpoint(endpoint -> endpoint.userService(oauth2UserServiceImpl))
                         .successHandler(oauth2SuccessHandler)
                 )
-                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(new FailAuthenticationEntryPoint()))
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(new FailAuthenticationEntryPoint()));
 
 
         return http.build();
