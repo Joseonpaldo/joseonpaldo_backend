@@ -9,6 +9,9 @@ env:
   DB_USERNAME: ${{ secrets.DB_USERNAME }}
   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
   BASE_URL: https://joseonpaldo.site
+  GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+  GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+  JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
 
 jobs:
   build:
@@ -64,6 +67,15 @@ jobs:
           echo "${{ secrets.NAVER_SECRETKEY }}" >> input.txt
           echo "" >> input.txt
           cat input.txt | ./ncloud configure
+
+      - name: Add ACG rule for deploy server
+        run: |
+          cd ~/CLI_1.1.20_20240620/cli_linux
+          ./ncloud vserver addAccessControlGroupInboundRule --regionCode KR --vpcNo ${{ secrets.NAVER_VPC }} --accessControlGroupNo ${{ secrets.NAVER_ACG_NO }} --accessControlGroupRuleList "protocolTypeCode='TCP', ipBlock='${{ env.PUBLIC_IP }}/32', portRange='22'"
+          sleep 10
+          ./ncloud vserver addAccessControlGroupInboundRule --regionCode KR --vpcNo ${{ secrets.NAVER_VPC }} --accessControlGroupNo ${{ secrets.NAVER_ACG_NO2 }} --accessControlGroupRuleList "protocolTypeCode='TCP', ipBlock='${{ env.PUBLIC_IP }}/32', portRange='3306'"
+          sleep 10
+          ./ncloud vserver addAccessControlGroupOutboundRule --regionCode KR --vpcNo ${{ secrets.NAVER_VPC }} --accessControlGroupNo ${{ secrets.NAVER_ACG_NO2 }} --accessControlGroupRuleList "protocolTypeCode='TCP', ipBlock='${{ env.PUBLIC_IP }}/32', portRange='3306'"
       
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -84,16 +96,6 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.REGISTRY_URL }}/joseonpaldo-boot:${{ env.COMMIT_HASH }}
-
-      - name: Add ACG rule for deploy server
-        run: |
-          cd ~/CLI_1.1.20_20240620/cli_linux
-          ./ncloud vserver addAccessControlGroupInboundRule --regionCode KR --vpcNo ${{ secrets.NAVER_VPC }} --accessControlGroupNo ${{ secrets.NAVER_ACG_NO }} --accessControlGroupRuleList "protocolTypeCode='TCP', ipBlock='${{ env.PUBLIC_IP }}/32', portRange='22'"
-          sleep 10
-          ./ncloud vserver addAccessControlGroupInboundRule --regionCode KR --vpcNo ${{ secrets.NAVER_VPC }} --accessControlGroupNo ${{ secrets.NAVER_ACG_NO2 }} --accessControlGroupRuleList "protocolTypeCode='TCP', ipBlock='${{ env.PUBLIC_IP }}/32', portRange='3306'"
-          sleep 10
-          ./ncloud vserver addAccessControlGroupOutboundRule --regionCode KR --vpcNo ${{ secrets.NAVER_VPC }} --accessControlGroupNo ${{ secrets.NAVER_ACG_NO2 }} --accessControlGroupRuleList "protocolTypeCode='TCP', ipBlock='${{ env.PUBLIC_IP }}/32', portRange='3306'"
-
 
       - name: SSH and deploy to server 001
         uses: appleboy/ssh-action@master
