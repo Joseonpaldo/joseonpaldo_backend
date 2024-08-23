@@ -18,6 +18,14 @@ public class UserRestController {
     final private UserService userService;
     final private JwtProvider jwtProvider;
 
+
+    @GetMapping("/health")
+    public String healthCheck() {
+         return "ok";
+    }
+
+
+
     // USER
     @GetMapping("/user")
     public UserEntity getUser(@RequestParam("user_id") Long user_id) {
