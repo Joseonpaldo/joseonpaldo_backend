@@ -2,6 +2,7 @@ package com.example.demo.data.service;
 
 import com.example.demo.data.entity.UserEntity;
 import com.example.demo.data.repository.UserRepository;
+import com.example.demo.data.repository.inter.UserRepositoryImpl;
 import com.example.demo.social.provider.JwtProvider;
 import com.example.demo.social.requestReponseDto.SignInResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 public class UserService {
     private final UserRepository userRepo;
     private final JwtProvider jwtProvider;
+    private final UserRepositoryImpl userRepositoryImpl;
 
     // USER
     // CREATE / check

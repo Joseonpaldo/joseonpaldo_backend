@@ -29,10 +29,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             throws IOException, ServletException {
         CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
         String accessToken = jwtProvider.createAccessToken(customOAuth2User.getUserId());
-//        String refreshToken = jwtProvider.createRefreshToken(user_identify_id);
-
-        //accesstoken localstorage에 저장하기 위한 임시 dto설정
-        //signInResDto = new SignInResponseDto(accessToken);
+        String refreshToken = jwtProvider.createRefreshToken(customOAuth2User.getUserId());
 
         //access cookie
         Cookie accessTokenCookie = new Cookie("accessToken", accessToken);
@@ -41,11 +38,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.addCookie(accessTokenCookie);
 
 //        // refresh cookie
-//        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
-//        refreshTokenCookie.setHttpOnly(true);
-//        refreshTokenCookie.setMaxAge(1 * 24 * 60 * 60); // 1 days
-//        refreshTokenCookie.setPath("/");    //특정 경로에서 유효한지 확인하는 메소드
-//        response.addCookie(refreshTokenCookie);
+        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setMaxAge(1 * 24 * 60 * 60); // 1 days
+        refreshTokenCookie.setPath("/");    //특정 경로에서 유효한지 확인하는 메소드
+        response.addCookie(refreshTokenCookie);
 
 //        //ajax 통신할때 설정했던 contentType작성 했던 것과 같음. 백앤드에서 선언
 //        response.setContentType("application/json");
