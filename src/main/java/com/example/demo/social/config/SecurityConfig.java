@@ -48,8 +48,8 @@ public class SecurityConfig {
                         .loginPage("/")
                         .authorizationEndpoint(endpoint ->  endpoint.baseUri("/api/user/login/oauth2"))    //내가 원하는 위치로 보냄 : 강사("/api/v1/auth/oauth2")
                         .redirectionEndpoint(endpoint -> endpoint.baseUri("/api/login/oauth2/code/*"))
-                        .userInfoEndpoint(endpoint -> endpoint.userService(oauth2UserServiceImpl))
                         .successHandler(oauth2SuccessHandler)
+                        .userInfoEndpoint(endpoint -> endpoint.userService(oauth2UserServiceImpl))
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(new FailAuthenticationEntryPoint()))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

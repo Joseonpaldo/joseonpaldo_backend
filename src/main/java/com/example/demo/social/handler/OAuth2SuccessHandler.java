@@ -29,10 +29,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             throws IOException, ServletException {
         CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
         String accessToken = jwtProvider.createAccessToken(customOAuth2User.getUserId());
-//        String refreshToken = jwtProvider.createRefreshToken(user_identify_id);
-
-        //accesstoken localstorage에 저장하기 위한 임시 dto설정
-        //signInResDto = new SignInResponseDto(accessToken);
+        String refreshToken = jwtProvider.createRefreshToken(customOAuth2User.getUserId());
 
         //access cookie
         Cookie accessTokenCookie = new Cookie("accessToken", accessToken);

@@ -31,24 +31,26 @@ public class JwtProvider {
         Map<String, Long> claims = new HashMap<>();
         claims.put("user_id", user_id);
 
-        String jwt = Jwts.builder()
+        String accessToken = Jwts.builder()
                 .signWith(key, SignatureAlgorithm.HS256)
                 .setClaims(claims)
                 .setIssuedAt(new Date())
                 .setExpiration(expiredDate)
                 .compact();
 
-        return jwt;
+        return accessToken;
     }
 
     //발급시간, 만료시간만 들어있어야됨
-    public String createRefreshToken(String user_identify_id){
+    public String createRefreshToken(Long user_id){
         Date expiredDate = Date.from(Instant.now().plus(1, ChronoUnit.DAYS)); // 1 day expiry
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        Map<String, Long> claims = new HashMap<>();
+        claims.put("user_id", user_id);
 
         String refreshToken = Jwts.builder()
                 .signWith(key, SignatureAlgorithm.HS256)
-                .setSubject(user_identify_id)   //accesstoken의 uii와 일치하는지 검사용도
+                .setClaims(claims)
                 .setIssuedAt(new Date())
                 .setExpiration(expiredDate)
                 .compact();

@@ -30,20 +30,20 @@ public class UserEntity {
     private String socialProvider;
     @Column(name = "profile_image")
     private String profilePicture;
-    @Column(name = "provider_accessToken")
+    @Column(name = "provider_access_token")
     private String providerAccessToken;
-
 
     private int tot_2p;
     private int win_2p;
     private int tot_4p;
     private int win_4p;
 
-    public UserEntity(String user_identify_id, String email, String profile_picture, String social_provider,String userName) {
+    public UserEntity(String user_identify_id, String email, String profile_picture, String social_provider,String userName, String providerAccessToken) {
         this.nickname=userName;
         this.userIdentifyId = user_identify_id;
         this.email = email;
         this.profilePicture = profile_picture;
         this.socialProvider = social_provider;
+        this.providerAccessToken = providerAccessToken;
     }
 }
