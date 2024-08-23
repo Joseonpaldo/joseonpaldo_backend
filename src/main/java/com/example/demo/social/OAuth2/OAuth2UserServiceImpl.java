@@ -30,6 +30,7 @@ public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
 
         UserEntity userEntity;
         String user_identify_id = null;
+        String userName=null;
         String email = null;
         String profile = null;
         String social_provider = null;
@@ -58,18 +59,18 @@ public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
             Map<String, Object> attributes = oAuth2User.getAttributes();
 
             user_identify_id = attributes.get("sub").toString();  // Google의 고유 사용자 ID
+            userName=attributes.get("given_name").toString();
             email = attributes.get("email").toString();
             profile = attributes.get("picture").toString();
             social_provider = "google";
         }
 
-        userEntity = new UserEntity(user_identify_id, email, profile, social_provider);
+        userEntity = new UserEntity(user_identify_id, email, profile, social_provider,userName);
 
         System.out.println(userEntity);
-        userService.loginUser(userEntity);
-        Long user_id=userEntity.getUser_id();
-        System.out.println(user_id);
+        Long userId =  userService.loginUser(userEntity);
+        System.out.println(userId);
 
-        return new CustomOAuth2User(user_identify_id);
+        return new CustomOAuth2User(user_identify_id,userId);
     }
 }

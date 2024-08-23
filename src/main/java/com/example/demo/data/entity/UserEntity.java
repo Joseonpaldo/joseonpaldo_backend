@@ -24,11 +24,11 @@ public class UserEntity {
     @Column(nullable = false, unique = true, name = "user_identify_id")
     private String userIdentifyId;
     private String email;   //요놈이 아이디
-    @Column(unique = true)
+    @Column(nullable = false)
     private String nickname;
     @Column(updatable = false, name = "social_provider")
     private String socialProvider;
-    @Column(name = "profile_picture")
+    @Column(name = "profile_image")
     private String profilePicture;
     @Column(name = "provider_accessToken")
     private String providerAccessToken;
@@ -39,7 +39,8 @@ public class UserEntity {
     private int tot_4p;
     private int win_4p;
 
-    public UserEntity(String user_identify_id, String email, String profile_picture, String social_provider) {
+    public UserEntity(String user_identify_id, String email, String profile_picture, String social_provider,String userName) {
+        this.nickname=userName;
         this.userIdentifyId = user_identify_id;
         this.email = email;
         this.profilePicture = profile_picture;

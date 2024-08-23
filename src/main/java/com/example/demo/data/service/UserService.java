@@ -18,13 +18,17 @@ public class UserService {
 
     // USER
     // CREATE / check
-    public void loginUser(UserEntity entity) {
+    public Long loginUser(UserEntity entity) {
         String uii = entity.getUserIdentifyId();
+        UserEntity user = userRepo.findByUserIdentifyId(uii);
         //고유 아이디로 로그인하지 않았다면
-        if (userRepo.findByUserIdentifyId(uii) == null) {
+        if (user == null) {
             //신규 생성자는 db에 저장
             userRepo.createUser(entity);
+        }else{
+            entity.setUser_id(user.getUser_id());
         }
+        return entity.getUser_id();
     }
 
     //재발급
@@ -34,7 +38,7 @@ public class UserService {
         }
 
         String userIdentifyId = jwtProvider.validate(refreshToken);
-        String newAccessToken = jwtProvider.createAccessToken(userIdentifyId);
+//        String newAccessToken = jwtProvider.createAccessToken(userIdentifyId);
 
         return null;
     }

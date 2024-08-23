@@ -14,6 +14,7 @@ import java.security.Key;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,13 +25,15 @@ public class JwtProvider {
     private String secretKey;
 //    private String secretKey = dotenv.get("SECRET_KEY");
 
-    public String createAccessToken(String user_identify_id){
+    public String createAccessToken(Long user_id){
         Date expiredDate = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        Map<String, Long> claims = new HashMap<>();
+        claims.put("user_id", user_id);
 
         String jwt = Jwts.builder()
                 .signWith(key, SignatureAlgorithm.HS256)
-                .setSubject(user_identify_id)
+                .setClaims(claims)
                 .setIssuedAt(new Date())
                 .setExpiration(expiredDate)
                 .compact();
