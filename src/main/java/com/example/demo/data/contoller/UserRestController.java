@@ -2,6 +2,7 @@ package com.example.demo.data.contoller;
 
 import com.example.demo.social.provider.JwtProvider;
 import com.example.demo.social.requestReponseDto.SignInResponseDto;
+import com.nimbusds.jwt.JWT;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,11 +38,12 @@ public class UserRestController {
 
     }
 
-    //refreshtoken 검사 후 accesstoken재발급
-    @PostMapping("/user/auth/reissue")
-    public ResponseEntity<?> refreshAccessToken(@CookieValue(value = "refreshToken", required = false) String refreshToken) {
-        return userService.refreshAccessToken(refreshToken);
-    }
+//    //refreshtoken 검사 후 accesstoken재발급
+//    @PostMapping("/user/auth/reissue")
+//    public String refreshAccessToken(@RequestParam String old_token) {
+//        jwtProvider.validate(old_token);
+//        return jwtProvider.createAccessToken(user_id);
+//    }
 
 
 

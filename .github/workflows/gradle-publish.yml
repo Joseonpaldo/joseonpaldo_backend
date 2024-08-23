@@ -8,6 +8,7 @@ env:
   DB_URL: ${{ secrets.DB_URL }}
   DB_USERNAME: ${{ secrets.DB_USERNAME }}
   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  BASE_URL: https://joseonpaldo.site
   GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
   GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
   JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
@@ -38,6 +39,7 @@ jobs:
           echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
           echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
           echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> .env
+          echo "BASE_URL=https://joseonpaldo.site" >> .env
     
       - name: Get Hash
         id: get_hash

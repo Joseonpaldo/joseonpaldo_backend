@@ -51,7 +51,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 //        response.setContentType("application/json");
 //        response.setCharacterEncoding("UTF-8");
 //        response.getWriter().write(jsonResponse);
-
-        response.sendRedirect("http://localhost:3000/returnCookie");
+        String baseUrl=System.getenv("BASE_URL");
+        response.sendRedirect(baseUrl+"/returnCookie");
     }
 }
