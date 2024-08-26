@@ -41,6 +41,16 @@ public class UserRestController {
         return new ResponseEntity("ok", HttpStatus.OK);
     }
 
+    @GetMapping("/user/{jwt}")
+    public UserEntity getUserByJWT(@PathVariable("jwt") String jwt) {
+        var userId = jwtProvider.getUserIdByJWT(jwt);
+        return userService.readUser(Long.valueOf(userId));
+    }
+
+    @PostMapping("/user/auth")
+    public void postUser(@RequestBody UserEntity entity, @RequestParam String social_provider) {
+
+    }
 
 //    //refreshtoken 검사 후 accesstoken재발급
 //    @PostMapping("/user/auth/reissue")
