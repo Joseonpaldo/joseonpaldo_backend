@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .csrf(CsrfConfigurer::disable)  //사이트의 요청을 어떻게 할것인가
                 .httpBasic(HttpBasicConfigurer::disable)    //유저 아이디, 비번만해서 하는 기본 인증 안함
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))   //세션 사용하지 않음
-                .authorizeHttpRequests(request -> request.requestMatchers("/api/health","/api/login/oauth2/**").permitAll()   //우리 userService requestMapping
+                .authorizeHttpRequests(request -> request.requestMatchers("/api/health","/api/login/oauth2/**","/api/**").permitAll()   //우리 userService requestMapping
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
@@ -51,8 +51,9 @@ public class SecurityConfig {
                         .successHandler(oauth2SuccessHandler)
                         .userInfoEndpoint(endpoint -> endpoint.userService(oauth2UserServiceImpl))
                 )
-                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(new FailAuthenticationEntryPoint()));
-
+                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(new FailAuthenticationEntryPoint()))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        ;
 
         return http.build();
     }

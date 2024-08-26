@@ -3,6 +3,7 @@ package com.example.demo.data.contoller;
 import com.example.demo.social.provider.JwtProvider;
 import com.example.demo.social.requestReponseDto.SignInResponseDto;
 import com.nimbusds.jwt.JWT;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +34,21 @@ public class UserRestController {
         return userService.readUser(user_id);
     }
 
+    @GetMapping("/user/{jwt}")
+    public UserEntity getUserByJWT(@PathVariable("jwt") String jwt) {
+        var userId = jwtProvider.getUserIdByJWT(jwt);
+        return userService.readUser(Long.valueOf(userId));
+    }
+
     @PostMapping("/user/auth")
     public void postUser(@RequestBody UserEntity entity, @RequestParam String social_provider) {
 
+    }
+
+    @GetMapping("/user/data")
+    public ResponseEntity getUserData(HttpServletRequest request) {
+        System.out.println(request.getHeader("Authorization"));
+        return new ResponseEntity("ok", HttpStatus.OK);
     }
 
 //    //refreshtoken 검사 후 accesstoken재발급
