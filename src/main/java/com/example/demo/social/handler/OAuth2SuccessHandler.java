@@ -44,10 +44,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         refreshTokenCookie.setPath("/");    //특정 경로에서 유효한지 확인하는 메소드
         response.addCookie(refreshTokenCookie);
 
+        response.sendRedirect("http://localhost:3000/returnCookie");
+
 //        //ajax 통신할때 설정했던 contentType작성 했던 것과 같음. 백앤드에서 선언
 //        response.setContentType("application/json");
 //        response.setCharacterEncoding("UTF-8");
 //        response.getWriter().write(jsonResponse);
-        response.sendRedirect("/returnCookie");
     }
 }

@@ -59,8 +59,9 @@ public class JwtProvider {
     }
 
     //토큰 검증
-    public String validate(String jwt){
-        String subject = null;
+    public Long validate(String jwt){
+        Long subject = null;
+        Date expiration = null;
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
         try {
@@ -70,7 +71,16 @@ public class JwtProvider {
                     .parseClaimsJws(jwt)
                     .getBody();
 
-            subject = claims.getSubject();
+            expiration = claims.getExpiration();
+
+            if (expiration.before(new Date())) {
+                // JWT가 만료된 경우
+                System.out.println("JWT is expired");
+                return null;
+            }
+
+            subject = claims.get("user_id", Long.class);
+            System.out.println("subject: " + subject);
             return subject; //유저 식별 아이디 userIdentifyId
 
         } catch (Exception exception){
