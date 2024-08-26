@@ -80,6 +80,27 @@ public class JwtProvider {
         }
     }
 
+    public String getUserIdByJWT(String jwt){
+        String userId = null;
+        Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(jwt)
+                    .getBody();
+
+            userId = claims.get("user_id").toString();
+            return userId;
+
+        } catch (Exception exception){
+            exception.printStackTrace();
+            return null;
+
+        }
+    }
+
     public boolean validateRefreshToken(String token) {
         try {
             Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
