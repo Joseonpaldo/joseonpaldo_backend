@@ -1,5 +1,6 @@
 package com.example.demo.data.contoller;
 
+import com.example.demo.social.filer.JwtAuthenticationFilter;
 import com.example.demo.social.provider.JwtProvider;
 import com.example.demo.social.requestReponseDto.SignInResponseDto;
 import com.nimbusds.jwt.JWT;
@@ -19,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class UserRestController {
     final private UserService userService;
     final private JwtProvider jwtProvider;
-
+    final private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @GetMapping("/health")
     public String healthCheck() {
@@ -34,6 +35,12 @@ public class UserRestController {
         return userService.readUser(user_id);
     }
 
+    @GetMapping("/user/data")
+    public ResponseEntity getUserData(HttpServletRequest request) {
+        System.out.println(request.getHeader("Authorization"));
+        return new ResponseEntity("ok", HttpStatus.OK);
+    }
+
     @GetMapping("/user/{jwt}")
     public UserEntity getUserByJWT(@PathVariable("jwt") String jwt) {
         var userId = jwtProvider.getUserIdByJWT(jwt);
@@ -45,19 +52,12 @@ public class UserRestController {
 
     }
 
-    @GetMapping("/user/data")
-    public ResponseEntity getUserData(HttpServletRequest request) {
-        System.out.println(request.getHeader("Authorization"));
-        return new ResponseEntity("ok", HttpStatus.OK);
-    }
-
 //    //refreshtoken 검사 후 accesstoken재발급
 //    @PostMapping("/user/auth/reissue")
 //    public String refreshAccessToken(@RequestParam String old_token) {
 //        jwtProvider.validate(old_token);
 //        return jwtProvider.createAccessToken(user_id);
 //    }
-
 
 
 

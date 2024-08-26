@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Service
 @RequiredArgsConstructor
@@ -33,24 +34,6 @@ public class UserService {
         }
         return entity.getUser_id();
     }
-
-    //재발급
-    public ResponseEntity<?> refreshAccessToken(String refreshToken) {
-        if (refreshToken == null || !jwtProvider.validateRefreshToken(refreshToken)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Refresh Token");
-        }
-
-        String userIdentifyId = jwtProvider.validate(refreshToken);
-//        String newAccessToken = jwtProvider.createAccessToken(userIdentifyId);
-
-        return null;
-    }
-
-
-
-
-
-
 
     // READ
     public UserEntity readUser(Long user_id) {
@@ -86,4 +69,5 @@ public class UserService {
     public void deleteUser(Long user_id) {
         userRepo.deleteUser(user_id);
     }
+
 }
