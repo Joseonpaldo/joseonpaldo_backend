@@ -41,18 +41,19 @@ public class SecurityConfig {
                 .csrf(CsrfConfigurer::disable)  //사이트의 요청을 어떻게 할것인가
                 .httpBasic(HttpBasicConfigurer::disable)    //유저 아이디, 비번만해서 하는 기본 인증 안함
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))   //세션 사용하지 않음
-                .authorizeHttpRequests(request -> request.requestMatchers("/", "/api/**", "/oauth2/**").permitAll()   //우리 userService requestMapping
+                .authorizeHttpRequests(request -> request.requestMatchers("/api/health","/api/login/oauth2/**","/api/**").permitAll()   //우리 userService requestMapping
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/")
-                        .authorizationEndpoint(endpoint ->  endpoint.baseUri("/api/user/login/oauth2"))    //내가 원하는 위치로 보냄 : 강사("/api/v1/auth/oauth2")
+                        .authorizationEndpoint(endpoint ->  endpoint.baseUri("/api/login/oauth2"))    //내가 원하는 위치로 보냄 : 강사("/api/v1/auth/oauth2")
                         .redirectionEndpoint(endpoint -> endpoint.baseUri("/api/login/oauth2/code/*"))
                         .successHandler(oauth2SuccessHandler)
                         .userInfoEndpoint(endpoint -> endpoint.userService(oauth2UserServiceImpl))
                 )
-                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(new FailAuthenticationEntryPoint()));
-
+                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(new FailAuthenticationEntryPoint()))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        ;
 
         return http.build();
     }
