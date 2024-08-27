@@ -28,14 +28,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try{
             String token = parseBearerToken(request);
+            System.out.println("프론트에서 준 accesstoken??:"+token);
+
             if(token == null){
                 filterChain.doFilter(request, response);
                 return;
             }
 
-            String userIdentifyId = jwtProvider.validate(token);
+            Long user_id = jwtProvider.validate(token);
+            System.out.println("에서 검증 후 추출 아이디?:"+user_id);
 
-            if(userIdentifyId != null){
+            if(user_id != null){
                 return;
             }
 
@@ -43,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             //유저정보를 저장함(다음 형식을 매개변수로 받음) : [email, passwd] : email, null
             AbstractAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(userIdentifyId, null);
+                    new UsernamePasswordAuthenticationToken(user_id, null);
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
             securityContext.setAuthentication(authenticationToken);
@@ -55,6 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
 
     private String parseBearerToken(HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");
@@ -72,6 +76,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String token = authorization.substring(7);
+
         return token;
     }
 }
