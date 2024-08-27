@@ -4,23 +4,19 @@ import com.example.demo.data.entity.UserEntity;
 import com.example.demo.data.repository.UserRepository;
 import com.example.demo.data.repository.inter.UserRepositoryImpl;
 import com.example.demo.social.provider.JwtProvider;
-import com.example.demo.social.requestReponseDto.SignInResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserAccountService {
+
     private final UserRepository userRepo;
     private final JwtProvider jwtProvider;
     private final UserRepositoryImpl userRepositoryImpl;
 
     // USER
-    // CREATE / check
+    // CREATE or check
     public Long loginUser(UserEntity entity) {
         String uii = entity.getUserIdentifyId();
         UserEntity user = userRepo.findByUserIdentifyId(uii);
@@ -44,30 +40,15 @@ public class UserService {
         return userRepo.findUserByEmail(email);
     }
 
+
     // UPDATE
     public void updateUserNickname(UserEntity entity) {
         userRepo.updateUserNickname(entity);
     }
 
-    public void updatePlayCount(Long user_id, String gameType) {
-        if (gameType == "2p") {
-            userRepo.updateUser2pTotCount(user_id);
-        } else {
-            userRepo.updateUser4pTotCount(user_id);
-        }
-    }
-
-    public void updateWinCount(Long user_id, String gameType) {
-        if (gameType == "2p") {
-            userRepo.updateUser2pWinCount(user_id);
-        } else {
-            userRepo.updateUser4pWinCount(user_id);
-        }
-    }
 
     // Delete
     public void deleteUser(Long user_id) {
         userRepo.deleteUser(user_id);
     }
-
 }

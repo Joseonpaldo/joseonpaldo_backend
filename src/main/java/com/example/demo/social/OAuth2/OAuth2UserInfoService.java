@@ -1,7 +1,8 @@
 package com.example.demo.social.OAuth2;
 
 import com.example.demo.data.entity.UserEntity;
-import com.example.demo.data.service.UserService;
+import com.example.demo.data.service.UserAccountService;
+import com.example.demo.data.service.UserGameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -15,8 +16,9 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
-    private final UserService userService;
+public class OAuth2UserInfoService extends DefaultOAuth2UserService {
+    private final UserGameService userGameService;
+    private final UserAccountService userAccountService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -69,7 +71,7 @@ public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
         userEntity = new UserEntity(user_identify_id, email, profile, social_provider,userName, providerAccessToken);
 
         System.out.println(userEntity);
-        Long userId =  userService.loginUser(userEntity);
+        Long userId =  userAccountService.loginUser(userEntity);
         System.out.println(userEntity);
 
         return new CustomOAuth2User(user_identify_id, userId);
