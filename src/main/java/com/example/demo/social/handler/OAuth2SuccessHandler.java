@@ -27,7 +27,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                                         HttpServletResponse response,
                                         Authentication authentication)
             throws IOException, ServletException {
+        System.out.println("onAuthenticationSuccess");
         CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+        System.out.println("customOAuth2User: " + customOAuth2User);
         String accessToken = jwtProvider.createAccessToken(customOAuth2User.getUserId());
         String refreshToken = jwtProvider.createRefreshToken(customOAuth2User.getUserId());
 
@@ -43,12 +45,15 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         refreshTokenCookie.setMaxAge(1 * 24 * 60 * 60); // 1 days
         refreshTokenCookie.setPath("/");    //특정 경로에서 유효한지 확인하는 메소드
         response.addCookie(refreshTokenCookie);
+        System.out.println("accessToken: " + accessToken);
 
-        response.sendRedirect("http://joseonpaldo.site/returnCookie");
+        response.sendRedirect("https://joseonpaldo.site/returnCookie");
 
 //        //ajax 통신할때 설정했던 contentType작성 했던 것과 같음. 백앤드에서 선언
 //        response.setContentType("application/json");
 //        response.setCharacterEncoding("UTF-8");
 //        response.getWriter().write(jsonResponse);
     }
+//
+//    private void sendPostRequest(String email,)
 }
