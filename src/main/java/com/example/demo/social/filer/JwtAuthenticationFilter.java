@@ -32,6 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = parseBearerToken(request);
             System.out.println("프론트에서 준 accesstoken??:"+token);
 
+
             if(token == null){
                 filterChain.doFilter(request, response);
                 return;
