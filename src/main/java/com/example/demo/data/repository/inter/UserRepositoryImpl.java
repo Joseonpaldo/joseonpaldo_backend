@@ -8,7 +8,5 @@ import com.example.demo.data.entity.UserEntity;
 public interface UserRepositoryImpl extends JpaRepository<UserEntity, Long> {
     UserEntity findByEmail(String email);
 
-    long countByEmailAndSocialProvider(String email, String socialProvider);
-
     UserEntity findByUserIdentifyId(String identifyId);
 }

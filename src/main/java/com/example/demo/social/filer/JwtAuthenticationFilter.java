@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -16,6 +17,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -25,7 +28,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
         try{
             String token = parseBearerToken(request);
             System.out.println("프론트에서 준 accesstoken??:"+token);
@@ -38,15 +40,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Long user_id = jwtProvider.validate(token);
             System.out.println("에서 검증 후 추출 아이디?:"+user_id);
 
-            if(user_id != null){
+            if(user_id == null){
+                System.out.println("혹시");
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT Token");
                 return;
             }
 
             SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+            List<GrantedAuthority> authoritiesRole = Collections.emptyList();
 
             //유저정보를 저장함(다음 형식을 매개변수로 받음) : [email, passwd] : email, null
             AbstractAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(user_id, null);
+                    new UsernamePasswordAuthenticationToken(user_id, token, authoritiesRole);
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
             securityContext.setAuthentication(authenticationToken);
@@ -54,6 +59,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         }catch (Exception e){
             e.printStackTrace();
+            System.out.println("혹시");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT Token");
         }
 
         filterChain.doFilter(request, response);
