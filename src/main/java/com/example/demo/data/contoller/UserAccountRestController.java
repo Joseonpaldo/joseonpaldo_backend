@@ -22,20 +22,26 @@ public class UserAccountRestController {
     @GetMapping("/auth")
     public UserEntity getUserData(HttpServletRequest request) {
         UserEntity userEntity;
-        String token = request.getHeader("Authorization").substring(7);
+        String authorizationHeader = request.getHeader("Authorization");
 
-        Long user_id = jwtProvider.validate(token);
+        if(authorizationHeader!=null && authorizationHeader.startsWith("Bearer ")){
+            String token=authorizationHeader.substring(7);
 
-        if(user_id == null) {
-            //userservice에 refreshtoken쿠키에서 읽어서 검증후 재발급 하는거 구현해야함
-            return null;
+            Long user_id = jwtProvider.validate(token);
+
+            if(user_id == null) {
+                //userservice에 refreshtoken쿠키에서 읽어서 검증후 재발급 하는거 구현해야함
+                return null;
+            }
+
+            userEntity = userAccountService.readUser(user_id);
+            userEntity.setUserIdentifyId(null);
+            userEntity.setProviderAccessToken(null);
+
+            return userEntity;
+        } else {
+            throw new RuntimeException("Authorization header is missing or invalid.");
         }
-
-        userEntity = userAccountService.readUser(user_id);
-        userEntity.setUserIdentifyId(null);
-        userEntity.setProviderAccessToken(null);
-
-        return userEntity;
     }
 
     //UPDATE
@@ -43,6 +49,7 @@ public class UserAccountRestController {
     //DELETE
     @DeleteMapping("/user/{id}")
     public void deleteUser(@PathVariable("id") Long user_id) {
+
         userAccountService.deleteUser(user_id);
     }
 }
