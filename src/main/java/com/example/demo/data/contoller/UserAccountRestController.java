@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -59,17 +60,30 @@ public class UserAccountRestController {
 
     @PutMapping("/user/addFriend")
     public void addFriend(@RequestParam Long user_id,@RequestParam Long friend_id) {
-        UserEntity entity=userAccountService.readUser(user_id);
-        List<String> friendList=entity.getFriendList();
-        if(friendList!=null){
-            friendList.add(friend_id.toString());
-            entity.setFriendList(friendList);
-        }else {
-            List<String> list=new ArrayList<>();
-            list.add(friend_id.toString());
-            entity.setFriendList(list);
+        UserEntity myEntity=userAccountService.readUser(user_id);
+        String friendList=myEntity.getFriendList();
+        if(friendList.equals("null")){
+            friendList="";
         }
 
-        userAccountService.updateFriendList(entity);
+        boolean myExists = Arrays.stream(friendList.split(","))
+                .anyMatch(name -> name.equals(friend_id.toString()));
+        if(!myExists){
+            myEntity.setFriendList(friendList+friend_id+",");
+            userAccountService.updateFriendList(myEntity);
+        }
+
+
+        UserEntity friendEntity=userAccountService.readUser(friend_id);
+        String friendListOfFriend=friendEntity.getFriendList();
+        if(friendListOfFriend.equals("null")){
+            friendListOfFriend="";
+        }
+
+        boolean friendExists=Arrays.stream(friendListOfFriend.split(",")).anyMatch(name -> name.equals(user_id.toString()));
+        if(!friendExists) {
+            friendEntity.setFriendList(friendListOfFriend + user_id + ",");
+            userAccountService.updateFriendList(friendEntity);
+        }
     }
 }
