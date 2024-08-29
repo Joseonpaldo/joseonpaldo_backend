@@ -62,12 +62,13 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
             Map<String, Object> kakaoAccount = (Map<String, Object>) oauth2User.getAttribute("kakao_account");
             Map<String, String> kakaoProfile = (Map<String, String>) kakaoAccount.get("profile");
 
+
             user = UserEntity.builder()
-                .email(kakaoProfile.get("email"))
+                .email(kakaoAccount.get("email").toString())
                 .nickname(kakaoProfile.get("nickname"))
                 .socialProvider(provider)
                 .providerAccessToken(socialAccessToken)
-                .userIdentifyId(oauth2User.getAttribute("id"))
+                .userIdentifyId(oauth2User.getAttribute("id").toString())
                 .profilePicture(kakaoProfile.get("profile_image_url"))
                 .build();
             userService.save(user);
@@ -81,7 +82,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
                 .nickname(naverProfile.get("name"))
                 .socialProvider(provider)
                 .providerAccessToken(socialAccessToken)
-                .userIdentifyId(oauth2User.getAttribute("id"))
+                .userIdentifyId(naverProfile.get("id"))
                 .profilePicture(naverProfile.get("profile_image"))
                 .build();
             userService.save(user);
