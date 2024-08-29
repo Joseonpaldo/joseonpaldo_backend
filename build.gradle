@@ -39,6 +39,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	implementation 'com.vladmihalcea:hibernate-types-52:2.21.1'
 
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'

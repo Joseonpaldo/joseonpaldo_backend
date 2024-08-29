@@ -46,6 +46,8 @@ public class UserAccountService {
         userRepo.updateUserNickname(entity);
     }
 
+    public void updateFriendList(UserEntity entity){userRepo.createUser(entity);}
+
 
     // Delete
     public void deleteUser(Long user_id) {

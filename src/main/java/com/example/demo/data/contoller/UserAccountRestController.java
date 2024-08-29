@@ -7,6 +7,7 @@ import com.example.demo.social.filer.JwtAuthenticationFilter;
 import com.example.demo.social.provider.JwtProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -52,4 +53,11 @@ public class UserAccountRestController {
 
         userAccountService.deleteUser(user_id);
     }
+
+//    @PutMapping("/user/addFriend")
+//    public void addFriend(@RequestParam Long user_id,@RequestParam Long friend_id) {
+//        UserEntity entity=userAccountService.readUser(user_id);
+//
+//        userAccountService.updateFriendList(user_id,);
+//    }
 }

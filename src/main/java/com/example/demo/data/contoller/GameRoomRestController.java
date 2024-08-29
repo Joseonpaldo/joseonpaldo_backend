@@ -2,7 +2,7 @@ package com.example.demo.data.contoller;
 
 import com.example.demo.data.entity.GameRoomEntity;
 import com.example.demo.data.service.GameRoomService;
-import com.example.demo.data.service.UserService;
+import com.example.demo.data.service.UserAccountService;
 import com.example.demo.social.provider.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class GameRoomRestController {
     final private GameRoomService gameRoomService;
-    final private UserService userService;
+    final private UserAccountService userService;
     final private JwtProvider jwtProvider;
 
 
