@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -26,9 +28,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-			.csrf(csrf -> csrf
-				.disable() // CSRF protection is not needed as we are using JWT tokens
-			)
+			.csrf(CsrfConfigurer::disable)
 			.cors(cors -> cors
 				.configurationSource(request -> {
 					CorsConfiguration corsConfiguration = new CorsConfiguration();
@@ -37,9 +37,7 @@ public class SecurityConfig {
 					return corsConfiguration;
 				})
 			)
-			.httpBasic(httpBasic -> httpBasic
-				.disable()
-			)
+			.httpBasic(HttpBasicConfigurer::disable)
 			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 			.sessionManagement(sessionManagement -> sessionManagement
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -49,7 +47,7 @@ public class SecurityConfig {
 			.oauth2Login(oauth2Login -> oauth2Login
 				.authorizationEndpoint(
 					endpoint -> endpoint.baseUri("/api/login/oauth2"))
-				.redirectionEndpoint(endpoint -> endpoint.baseUri("/api/login/oauth2/callback"))
+				.redirectionEndpoint(endpoint -> endpoint.baseUri("/api/login/oauth2/callback/*"))
 				.successHandler(oauth2SuccessHandler)
 			)
 			.logout(logout -> logout
