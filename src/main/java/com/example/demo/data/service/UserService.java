@@ -22,4 +22,10 @@ public class UserService {
         }
         return user;
     }
+
+    public void removeProviderAccessToken(Long userId) {
+        UserEntity user = userRepositoryImpl.findById(userId).get();
+        user.setProviderAccessToken(null);
+        userRepositoryImpl.save(user);
+    }
 }

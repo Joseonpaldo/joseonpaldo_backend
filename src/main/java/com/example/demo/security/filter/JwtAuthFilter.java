@@ -68,7 +68,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         Map<String, String> claims = jwtProvider.getClaimsFromToken(refreshToken);
                         String newAccessToken = jwtProvider.createAccessToken(Long.parseLong(claims.get("user_id")), claims.get("provider"));
 
-                        response.setHeader("AccessToken", newAccessToken);
+                        response.setHeader("accessToken", newAccessToken);
                     } else {
                         // If the refresh token is invalid, return error page - session expired
                         Map<String, String> claims = jwtProvider.getClaimsFromToken(refreshToken);
@@ -79,6 +79,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         String token = user.getProviderAccessToken();
 
                         httpClientTools.sendRequest(provider, token);
+                        userService.removeProviderAccessToken(user_id);
                         // Need to create logout action -> social logout action required
                         response.sendRedirect("/error/session-expired");
                     }
