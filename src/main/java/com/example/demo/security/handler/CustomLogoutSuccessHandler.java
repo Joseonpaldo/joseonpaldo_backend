@@ -35,7 +35,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
             }
         }
 
-        Long userId = Long.parseLong(jwtProvider.getClaimsFromToken(refreshToken).get("userId"));
+        Long userId = Long.parseLong(jwtProvider.getClaimsFromToken(refreshToken).get("sub"));
         UserEntity user = userService.getUser(userId);
 
         httpClientTools.sendRequest(user.getSocialProvider(), user.getProviderAccessToken());
