@@ -46,7 +46,11 @@ public class SecurityConfig {
 				.anyRequest().authenticated())
 			.oauth2Login(oauth2Login -> oauth2Login
 				.authorizationEndpoint(
-					endpoint -> endpoint.baseUri("/api/login/oauth2"))
+					endpoint -> {
+						endpoint.baseUri("/api/login/oauth2");
+						System.out.println("OAuth2 Login Endpoint: " + endpoint);
+					}
+				)
 				.redirectionEndpoint(endpoint -> endpoint.baseUri("/api/login/oauth2/callback/*"))
 				.successHandler(oauth2SuccessHandler)
 				.failureHandler((request, response, exception) -> {
