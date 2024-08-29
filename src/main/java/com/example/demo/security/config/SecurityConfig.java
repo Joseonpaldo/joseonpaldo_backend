@@ -37,11 +37,14 @@ public class SecurityConfig {
 					return corsConfiguration;
 				})
 			)
+			.httpBasic(httpBasic -> httpBasic
+				.disable()
+			)
 			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 			.sessionManagement(sessionManagement -> sessionManagement
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(request -> request
-				.requestMatchers("/", "/api/login/oauth2/*", "/api/health").permitAll()
+				.requestMatchers("/api/health").permitAll()
 				.anyRequest().authenticated())
 			.oauth2Login(oauth2Login -> oauth2Login
 				.authorizationEndpoint(
