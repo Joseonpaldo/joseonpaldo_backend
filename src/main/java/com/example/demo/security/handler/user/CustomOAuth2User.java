@@ -1,21 +1,35 @@
 package com.example.demo.security.handler.user;
 
+import java.util.Collection;
+import java.util.Map;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class CustomOAuth2User {
+@Getter
+public class CustomOAuth2User implements OAuth2User {
     private Long userId;
     private String provider;
 
-    public Long getUserId() {
-        return userId;
+    @Override
+    public Map<String, Object> getAttributes() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAttributes'");
     }
-
-    public String getProvider() {
-        return provider;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
+    }
+    @Override
+    public String getName() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getName'");
     }
 }

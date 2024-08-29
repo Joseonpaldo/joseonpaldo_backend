@@ -3,6 +3,8 @@ package com.example.demo.security.handler;
 import java.io.IOException;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -23,9 +25,12 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
-        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
-        String accessToken = jwtProvider.createAccessToken(customOAuth2User.getUserId(), customOAuth2User.getProvider());
-        String refreshToken = jwtProvider.createRefreshToken(customOAuth2User.getUserId(), customOAuth2User.getProvider());
+        OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
+
+        System.out.println(oauth2User.getAttributes());
+
+        String accessToken = jwtProvider.createAccessToken(Long.parseLong("1"), "google");
+        String refreshToken = jwtProvider.createRefreshToken(Long.parseLong("1"), "google");
 
         //access cookie
         Cookie accessTokenCookie = new Cookie("accessToken", accessToken);
@@ -40,6 +45,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
         refreshTokenCookie.setPath("/");    //특정 경로에서 유효한지 확인하는 메소드
         response.addCookie(refreshTokenCookie);
 
-        response.sendRedirect("http://joseonpaldo.site/returnCookie");
+        response.sendRedirect("/returnCookie");
     }
 }
