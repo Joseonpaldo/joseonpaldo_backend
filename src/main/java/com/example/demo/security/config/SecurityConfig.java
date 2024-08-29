@@ -49,6 +49,10 @@ public class SecurityConfig {
 					endpoint -> endpoint.baseUri("/api/login/oauth2"))
 				.redirectionEndpoint(endpoint -> endpoint.baseUri("/api/login/oauth2/callback/*"))
 				.successHandler(oauth2SuccessHandler)
+				.failureHandler((request, response, exception) -> {
+						response.sendRedirect("/");
+					}
+				)
 			)
 			.logout(logout -> logout
 				.logoutUrl("/api/logout")
