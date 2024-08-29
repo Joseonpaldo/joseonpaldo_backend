@@ -58,6 +58,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if (accessToken !=null) {
             // Validattion Process for Access Token
+            System.out.println("JwtAuthFilter");
             String username = null;
             if (jwtProvider.validateToken(accessToken)) {
                 username = jwtProvider.getClaimsFromToken(accessToken).get("user_id");
@@ -102,7 +103,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
-        System.out.println("JwtAuthFilter");
+        
         filterChain.doFilter(request, response);
     }
 
