@@ -1,6 +1,9 @@
 package com.example.demo.data.entity;
 
+import com.example.demo.data.converter.JsonConverter;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -33,17 +38,12 @@ public class UserEntity {
     @Column(name = "provider_access_token")
     private String providerAccessToken;
 
+    @Convert(converter = JsonConverter.class)
+    @Column(columnDefinition = "json", name = "friend_list")
+    private List<String> friendList;
+
     private int tot_2p;
     private int win_2p;
     private int tot_4p;
     private int win_4p;
-
-    public UserEntity(String user_identify_id, String email, String profile_picture, String social_provider,String userName, String providerAccessToken) {
-        this.nickname=userName;
-        this.userIdentifyId = user_identify_id;
-        this.email = email;
-        this.profilePicture = profile_picture;
-        this.socialProvider = social_provider;
-        this.providerAccessToken = providerAccessToken;
-    }
 }
