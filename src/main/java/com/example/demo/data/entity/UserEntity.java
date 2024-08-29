@@ -1,12 +1,11 @@
 package com.example.demo.data.entity;
 
-import com.vladmihalcea.hibernate.type.json.JsonType;
+import com.example.demo.data.entity.converterClass.JsonConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 
 import java.util.List;
 
@@ -31,6 +30,9 @@ public class UserEntity {
     private String profilePicture;
     @Column(name = "provider_access_token")
     private String providerAccessToken;
+    @Convert(converter = JsonConverter.class)
+    @Column(name = "friend_list", columnDefinition = "JSON")
+    private List<String> friendList;
 
     private int tot_2p;
     private int win_2p;

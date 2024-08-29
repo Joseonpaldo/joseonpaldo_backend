@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -54,10 +56,13 @@ public class UserAccountRestController {
         userAccountService.deleteUser(user_id);
     }
 
-//    @PutMapping("/user/addFriend")
-//    public void addFriend(@RequestParam Long user_id,@RequestParam Long friend_id) {
-//        UserEntity entity=userAccountService.readUser(user_id);
-//
-//        userAccountService.updateFriendList(user_id,);
-//    }
+    @PutMapping("/user/addFriend")
+    public void addFriend(@RequestParam Long user_id,@RequestParam Long friend_id) {
+        UserEntity entity=userAccountService.readUser(user_id);
+        List<String> friendList=entity.getFriendList();
+        friendList.add(friend_id.toString());
+        entity.setFriendList(friendList);
+
+        userAccountService.updateFriendList(entity);
+    }
 }
