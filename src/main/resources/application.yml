@@ -18,7 +18,7 @@ spring:
     generate-ddl: true    
     show-sql: true
     database: mysql 
-    database-platform: org.hibernate.dialect.MySQLDialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
 
   security:
     oauth2:
