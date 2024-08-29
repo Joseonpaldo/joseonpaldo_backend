@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -60,8 +61,14 @@ public class UserAccountRestController {
     public void addFriend(@RequestParam Long user_id,@RequestParam Long friend_id) {
         UserEntity entity=userAccountService.readUser(user_id);
         List<String> friendList=entity.getFriendList();
-        friendList.add(friend_id.toString());
-        entity.setFriendList(friendList);
+        if(friendList!=null){
+            friendList.add(friend_id.toString());
+            entity.setFriendList(friendList);
+        }else {
+            List<String> list=new ArrayList<>();
+            list.add(friend_id.toString());
+            entity.setFriendList(list);
+        }
 
         userAccountService.updateFriendList(entity);
     }

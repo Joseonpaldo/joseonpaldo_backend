@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class UserEntity {
     @Column(name = "provider_access_token")
     private String providerAccessToken;
     @Convert(converter = JsonConverter.class)
-    @Column(name = "friend_list", columnDefinition = "JSON")
+    @Column(name = "friend_list", columnDefinition = "json")
     private List<String> friendList;
 
     private int tot_2p;
