@@ -71,8 +71,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
                 .profilePicture(kakaoProfile.get("profile_image_url"))
                 .build();
             userService.save(user);
+
             userId = user.getUser_id();
-        }else if(provider.equals("kakao")) {
+        }else if(provider.equals("naver")) {
             Map<String, String> naverProfile = (Map<String, String>) oauth2User.getAttribute("response");
 
             user = UserEntity.builder()

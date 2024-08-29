@@ -30,7 +30,7 @@ spring:
             scope: 
               - profile
               - email
-            redirect-uri: "{base_url}/api/login/oauth2/callback/{registrationId}"
+            redirect-uri: "{baseUrl}/api/login/oauth2/callback/{registrationId}"
             authorization-grant-type: authorization_code
           kakao:
             client-id: ${KAKAO_CLIENT_ID}
