@@ -50,7 +50,8 @@ public class SecurityConfig {
 				.redirectionEndpoint(endpoint -> endpoint.baseUri("/api/login/oauth2/callback/*"))
 				.successHandler(oauth2SuccessHandler)
 				.failureHandler((request, response, exception) -> {
-						System.err.println("OAuth2 Login Error: " + exception.getStackTrace());
+						System.err.println("OAuth2 Login Error: ");
+						exception.printStackTrace();
 						response.sendRedirect("/");
 					}
 				)
