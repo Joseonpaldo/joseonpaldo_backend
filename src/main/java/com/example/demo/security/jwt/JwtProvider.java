@@ -80,6 +80,9 @@ public class JwtProvider {
         Claims claims = jwtParser.parseClaimsJws(token).getBody();
         ZonedDateTime now = ZonedDateTime.now(ZoneOffset.UTC);
 
+        System.out.println(claims.getExpiration().toInstant());
+        System.out.println(now.toInstant());
+
         return claims.getExpiration().toInstant().isAfter(now.toInstant());
     }
 
