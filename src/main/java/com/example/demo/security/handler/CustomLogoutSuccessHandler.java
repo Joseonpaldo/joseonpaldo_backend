@@ -29,6 +29,9 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
             throws IOException, ServletException {
         Cookie[] cookies = request.getCookies();
         String refreshToken = null;
+        
+        System.out.println("in logout");
+
         for(Cookie cookie : cookies) {
             if(cookie.getName().equals("refreshToken")) {
                 refreshToken = cookie.getValue();

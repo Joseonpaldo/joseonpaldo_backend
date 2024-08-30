@@ -112,14 +112,14 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 
         //access cookie
         Cookie accessTokenCookie = new Cookie("accessToken", accessToken);
-        accessTokenCookie.setMaxAge(30 * 60); // 1 days
+        accessTokenCookie.setMaxAge(30 * 60 * 1000); // 1 days
         accessTokenCookie.setPath("/");    //특정 경로에서 유효한지 확인하는 메소드
         response.addCookie(accessTokenCookie);
 
         // refresh cookie
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
         refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setMaxAge(1 * 24 * 60 * 60); // 1 days
+        refreshTokenCookie.setMaxAge(1 * 24 * 60 * 60 * 1000); // 1 days
         refreshTokenCookie.setPath("/");    //특정 경로에서 유효한지 확인하는 메소드
         response.addCookie(refreshTokenCookie);
 
