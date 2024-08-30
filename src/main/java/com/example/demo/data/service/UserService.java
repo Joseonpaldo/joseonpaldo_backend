@@ -23,6 +23,10 @@ public class UserService {
         return user;
     }
 
+    public UserEntity getUser(String userIdentifyId) {
+        return userRepositoryImpl.findByUserIdentifyId(userIdentifyId);
+    }
+
     public void save(UserEntity user) {
         userRepositoryImpl.save(user);
     }

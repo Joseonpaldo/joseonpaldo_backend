@@ -7,7 +7,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -48,45 +47,64 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 
         // DB Save Process
         if(provider.equals("google")) {
-            user = UserEntity.builder()
-                .email(oauth2User.getAttribute("email"))
-                .nickname(oauth2User.getAttribute("name"))
-                .socialProvider(provider)
-                .providerAccessToken(socialAccessToken)
-                .userIdentifyId(oauth2User.getAttribute("sub"))
-                .profilePicture(oauth2User.getAttribute("picture"))
-                .build();
-            userService.save(user);
-            userId = user.getUser_id();
+            if(userService.getUser(oauth2User.getAttribute("sub").toString()) != null) {
+                user = userService.getUser(oauth2User.getAttribute("sub").toString());
+                user.setProviderAccessToken(socialAccessToken);
+                userService.save(user);
+                userId = user.getUser_id();
+            } else {
+                user = UserEntity.builder()
+                    .email(oauth2User.getAttribute("email"))
+                    .nickname(oauth2User.getAttribute("name"))
+                    .socialProvider(provider)
+                    .providerAccessToken(socialAccessToken)
+                    .userIdentifyId(oauth2User.getAttribute("sub"))
+                    .profilePicture(oauth2User.getAttribute("picture"))
+                    .build();
+                userService.save(user);
+                userId = user.getUser_id();
+            }
         }else if(provider.equals("kakao")) {
             Map<String, Object> kakaoAccount = (Map<String, Object>) oauth2User.getAttribute("kakao_account");
             Map<String, String> kakaoProfile = (Map<String, String>) kakaoAccount.get("profile");
 
-
-            user = UserEntity.builder()
-                .email(kakaoAccount.get("email").toString())
-                .nickname(kakaoProfile.get("nickname"))
-                .socialProvider(provider)
-                .providerAccessToken(socialAccessToken)
-                .userIdentifyId(oauth2User.getAttribute("id").toString())
-                .profilePicture(kakaoProfile.get("profile_image_url"))
-                .build();
-            userService.save(user);
-
-            userId = user.getUser_id();
+            if(userService.getUser(oauth2User.getAttribute("id").toString()) != null) {
+                user = userService.getUser(oauth2User.getAttribute("id").toString());
+                user.setProviderAccessToken(socialAccessToken);
+                userService.save(user);
+                userId = user.getUser_id();
+            }else {
+                user = UserEntity.builder()
+                    .email(kakaoAccount.get("email").toString())
+                    .nickname(kakaoProfile.get("nickname"))
+                    .socialProvider(provider)
+                    .providerAccessToken(socialAccessToken)
+                    .userIdentifyId(oauth2User.getAttribute("id").toString())
+                    .profilePicture(kakaoProfile.get("profile_image_url"))
+                    .build();
+                userService.save(user);
+                userId = user.getUser_id();
+            }
         }else if(provider.equals("naver")) {
             Map<String, String> naverProfile = (Map<String, String>) oauth2User.getAttribute("response");
-
-            user = UserEntity.builder()
-                .email(naverProfile.get("email"))
-                .nickname(naverProfile.get("name"))
-                .socialProvider(provider)
-                .providerAccessToken(socialAccessToken)
-                .userIdentifyId(naverProfile.get("id"))
-                .profilePicture(naverProfile.get("profile_image"))
-                .build();
-            userService.save(user);
-            userId = user.getUser_id();
+            
+            if(userService.getUser(naverProfile.get("id")) != null) {
+                user = userService.getUser(naverProfile.get("id"));
+                user.setProviderAccessToken(socialAccessToken);
+                userService.save(user);
+                userId = user.getUser_id();
+            }else {
+                user = UserEntity.builder()
+                    .email(naverProfile.get("email"))
+                    .nickname(naverProfile.get("name"))
+                    .socialProvider(provider)
+                    .providerAccessToken(socialAccessToken)
+                    .userIdentifyId(naverProfile.get("id"))
+                    .profilePicture(naverProfile.get("profile_image"))
+                    .build();
+                userService.save(user);
+                userId = user.getUser_id();
+            }
         }
 
         String accessToken = jwtProvider.createAccessToken(userId, provider);
