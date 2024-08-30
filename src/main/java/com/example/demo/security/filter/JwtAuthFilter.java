@@ -61,8 +61,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             System.out.println("JwtAuthFilter");
             String username = null;
             if (jwtProvider.validateToken(accessToken)) {
+                System.out.println("JwtAuthFilter - validateToken");
                 username = jwtProvider.getClaimsFromToken(accessToken).get("user_id");
                 if (!jwtProvider.checkTokenExpiration(accessToken)) {
+                    System.out.println("JwtAuthFilter - checkTokenExpiration - access token is expired");
                     // If the access token is expired, check the refresh token
                     if (jwtProvider.checkTokenExpiration(refreshToken)) {
                         // If the refresh token is valid, generate a new access token then proceed to the next filter
