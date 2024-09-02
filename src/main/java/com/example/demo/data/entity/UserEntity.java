@@ -1,6 +1,11 @@
 package com.example.demo.data.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,13 +39,4 @@ public class UserEntity {
     private int win_2p;
     private int tot_4p;
     private int win_4p;
-
-    public UserEntity(String user_identify_id, String email, String profile_picture, String social_provider,String userName, String providerAccessToken) {
-        this.nickname=userName;
-        this.userIdentifyId = user_identify_id;
-        this.email = email;
-        this.profilePicture = profile_picture;
-        this.socialProvider = social_provider;
-        this.providerAccessToken = providerAccessToken;
-    }
 }
