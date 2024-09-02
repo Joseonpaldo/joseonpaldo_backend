@@ -91,7 +91,7 @@ public class JwtProvider {
         Claims claims = jwtParser.parseClaimsJws(token).getBody();
 
         Map<String, String> map = new HashMap<>();
-        map.put("user_id", claims.getSubject());
+        map.put("user_id", claims.get("user_id", String.class));
         map.put("provider", claims.get("provider", String.class));
 
         return map;
