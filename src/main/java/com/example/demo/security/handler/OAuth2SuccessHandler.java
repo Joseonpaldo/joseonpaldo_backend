@@ -53,7 +53,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
                 user.setProviderAccessToken(socialAccessToken);
                 user.setProfilePicture(oauth2User.getAttribute("picture"));
                 userService.save(user);
-                userId = user.getUser_id();
+                userId = user.getUserId();
             } else {
                 user = UserEntity.builder()
                     .email(oauth2User.getAttribute("email"))
@@ -64,7 +64,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
                     .profilePicture(oauth2User.getAttribute("picture"))
                     .build();
                 userService.save(user);
-                userId = user.getUser_id();
+                userId = user.getUserId();
             }
         }else if(provider.equals("kakao")) {
             System.out.println("Kakao User Exists");
@@ -75,7 +75,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
                 user = userService.getUser(oauth2User.getAttribute("id").toString());
                 user.setProviderAccessToken(socialAccessToken);
                 userService.save(user);
-                userId = user.getUser_id();
+                userId = user.getUserId();
             }else {
                 user = UserEntity.builder()
                     .email(kakaoAccount.get("email").toString())
@@ -86,7 +86,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
                     .profilePicture(kakaoProfile.get("profile_image_url"))
                     .build();
                 userService.save(user);
-                userId = user.getUser_id();
+                userId = user.getUserId();
             }
         }else if(provider.equals("naver")) {
             Map<String, String> naverProfile = (Map<String, String>) oauth2User.getAttribute("response");
@@ -96,7 +96,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
                 user = userService.getUser(naverProfile.get("id"));
                 user.setProviderAccessToken(socialAccessToken);
                 userService.save(user);
-                userId = user.getUser_id();
+                userId = user.getUserId();
             }else {
                 user = UserEntity.builder()
                     .email(naverProfile.get("email"))
@@ -107,7 +107,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
                     .profilePicture(naverProfile.get("profile_image"))
                     .build();
                 userService.save(user);
-                userId = user.getUser_id();
+                userId = user.getUserId();
             }
         }
 

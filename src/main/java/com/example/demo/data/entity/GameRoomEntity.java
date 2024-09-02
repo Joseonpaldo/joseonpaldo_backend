@@ -17,16 +17,16 @@ import lombok.NoArgsConstructor;
 public class GameRoomEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long room_id;
-    private String room_name;
+    private Long roomId;
+    private String roomName;
     @ColumnDefault("0")
     private Integer roomStatus;
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private UserEntity user;
     @ColumnDefault("4")
-    private int tot_player; //방 생성 시 본인 필수
+    private int totPlayer; //방 생성 시 본인 필수
     @ColumnDefault("0")
-    private int curr_player;
+    private int currPlayer;
     private int budget;
 }
