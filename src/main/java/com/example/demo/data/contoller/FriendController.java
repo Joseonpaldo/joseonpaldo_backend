@@ -1,6 +1,5 @@
 package com.example.demo.data.contoller;
 
-import com.example.demo.data.entity.FriendRelationEntity;
 import com.example.demo.data.entity.UserEntity;
 import com.example.demo.data.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,6 @@ public class FriendController {
         UserEntity friend=userService.getUser(friend_id);
         userService.addFriend(user,friend);
     }
-
 
     @DeleteMapping("/user/Friend")
     public void deleteFriend(@RequestParam Long user_id,@RequestParam Long friend_id){
