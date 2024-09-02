@@ -1,4 +1,4 @@
-package com.example.demo.data.repository.inter;
+package com.example.demo.data.repository;
 
 import com.example.demo.data.entity.FriendLogEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
