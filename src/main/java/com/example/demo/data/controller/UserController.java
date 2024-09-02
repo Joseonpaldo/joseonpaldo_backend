@@ -38,7 +38,7 @@ public class UserController {
 
     @GetMapping("/user/{jwt}")
     public UserPrintDto getUserByJWT(@PathVariable("jwt") String jwt) {
-        var userId = jwtProvider.getClaimsFromToken(jwt).get("user_id");
-        return userService.findUserPrintById(Long.valueOf(userId));
+        Long userId = Long.parseLong(jwtProvider.getClaimsFromToken(jwt).get("user_id"));
+        return userService.findUserPrintById(userId);
     }
 }
