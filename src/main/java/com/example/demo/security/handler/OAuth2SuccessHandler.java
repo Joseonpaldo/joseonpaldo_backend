@@ -48,8 +48,10 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
         // DB Save Process
         if(provider.equals("google")) {
             if(userService.getUser(oauth2User.getAttribute("sub").toString()) != null) {
+                System.out.println("Google User Exists");
                 user = userService.getUser(oauth2User.getAttribute("sub").toString());
                 user.setProviderAccessToken(socialAccessToken);
+                user.setProfilePicture(oauth2User.getAttribute("picture"));
                 userService.save(user);
                 userId = user.getUser_id();
             } else {
@@ -65,6 +67,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
                 userId = user.getUser_id();
             }
         }else if(provider.equals("kakao")) {
+            System.out.println("Kakao User Exists");
             Map<String, Object> kakaoAccount = (Map<String, Object>) oauth2User.getAttribute("kakao_account");
             Map<String, String> kakaoProfile = (Map<String, String>) kakaoAccount.get("profile");
 
@@ -87,6 +90,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
             }
         }else if(provider.equals("naver")) {
             Map<String, String> naverProfile = (Map<String, String>) oauth2User.getAttribute("response");
+            System.out.println("Naver User Exists");
             
             if(userService.getUser(naverProfile.get("id")) != null) {
                 user = userService.getUser(naverProfile.get("id"));
