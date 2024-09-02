@@ -38,10 +38,10 @@ public class UserEntity {
     @Column(name = "provider_access_token")
     private String providerAccessToken;
 
-    private int tot_2p;
-    private int win_2p;
-    private int tot_4p;
-    private int win_4p;
+    private int tot2p;
+    private int win2p;
+    private int tot4p;
+    private int win4p;
 
     @Column(precision = 5, scale = 2)
     private BigDecimal winRate2p;
@@ -57,9 +57,9 @@ public class UserEntity {
     }
 
     private void calculateWinRate2p() {
-        if (tot_2p != 0) {
-            this.winRate2p = new BigDecimal(win_2p)
-                                    .divide(new BigDecimal(tot_2p), 2, RoundingMode.HALF_UP)
+        if (tot2p != 0) {
+            this.winRate2p = new BigDecimal(win2p)
+                                    .divide(new BigDecimal(tot2p), 2, RoundingMode.HALF_UP)
                                     .multiply(new BigDecimal(100));
         } else {
             this.winRate2p = BigDecimal.ZERO;
@@ -67,9 +67,9 @@ public class UserEntity {
     }
 
     private void calculateWinRate4p() {
-        if (tot_4p != 0) {
-            this.winRate4p = new BigDecimal(win_4p)
-                                    .divide(new BigDecimal(tot_4p), 2, RoundingMode.HALF_UP)
+        if (tot4p != 0) {
+            this.winRate4p = new BigDecimal(win4p)
+                                    .divide(new BigDecimal(tot4p), 2, RoundingMode.HALF_UP)
                                     .multiply(new BigDecimal(100));
         } else {
             this.winRate4p = BigDecimal.ZERO;

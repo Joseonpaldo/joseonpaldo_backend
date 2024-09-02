@@ -22,7 +22,7 @@ public class GameRoomEntity {
     @ColumnDefault("0")
     private Integer roomStatus;
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private UserEntity user;
     @ColumnDefault("4")
     private int totPlayer; //방 생성 시 본인 필수

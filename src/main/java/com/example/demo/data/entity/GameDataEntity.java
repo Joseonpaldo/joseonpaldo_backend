@@ -31,10 +31,10 @@ public class GameDataEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dataId;
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private UserEntity user;
     @ManyToOne
-    @JoinColumn(name = "room_id", referencedColumnName = "room_id")
+    @JoinColumn(name = "room_id", referencedColumnName = "roomId")
     private GameRoomEntity gameRoom;
     @ColumnDefault("0")
     private int userLocation;
