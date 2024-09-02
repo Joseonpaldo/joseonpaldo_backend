@@ -38,31 +38,26 @@ public class UserEntity {
     @Column(name = "provider_access_token")
     private String providerAccessToken;
 
+    @Column(columnDefinition = "int default 0")
     private int tot2p;
+
+    @Column(columnDefinition = "int default 0")
     private int win2p;
+
+    @Column(columnDefinition = "int default 0")
     private int tot4p;
+
+    @Column(columnDefinition = "int default 0")
     private int win4p;
 
-    @Column(precision = 5, scale = 2)
+    @Column(precision = 5, scale = 2, columnDefinition = "decimal(5,2) default 0.00")
     private BigDecimal winRate2p;
 
-    @Column(precision = 5, scale = 2)
+    @Column(precision = 5, scale = 2, columnDefinition = "decimal(5,2) default 0.00")
     private BigDecimal winRate4p;
 
     @PrePersist
-    private void init() {
-        this.tot2p = 0;
-        this.win2p = 0;
-        this.tot4p = 0;
-        this.win4p = 0;
-        calculate();
-    }
-
     @PreUpdate
-    private void update() {
-        calculate();
-    }
-
     private void calculate() {
         calculateWinRate2p();
         calculateWinRate4p();
@@ -73,8 +68,6 @@ public class UserEntity {
             this.winRate2p = new BigDecimal(win2p)
                                     .divide(new BigDecimal(tot2p), 2, RoundingMode.HALF_UP)
                                     .multiply(new BigDecimal(100));
-        } else {
-            this.winRate2p = BigDecimal.ZERO;
         }
     }
 
@@ -83,8 +76,6 @@ public class UserEntity {
             this.winRate4p = new BigDecimal(win4p)
                                     .divide(new BigDecimal(tot4p), 2, RoundingMode.HALF_UP)
                                     .multiply(new BigDecimal(100));
-        } else {
-            this.winRate4p = BigDecimal.ZERO;
         }
     }
 }
