@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepositoryImpl userRepositoryImpl;
-    
+
     public UserEntity getUser(Long user_id) {
         UserEntity user;
         try {
