@@ -44,15 +44,15 @@ public class GameRoomRestController {
         var user = userService.getUser(userId);
 
         var entity = GameRoomEntity.builder()
-                .room_name(roomName)
+                .roomName(roomName)
                 .budget(budget)
                 .user(user)
                 .roomStatus(0)
-                .tot_player(4)
+                .totPlayer(4)
                 .build();
         gameRoomService.createGR(entity);
 
-        return new ResponseEntity(entity.getRoom_id(), HttpStatus.OK);
+        return new ResponseEntity(entity.getRoomId(), HttpStatus.OK);
     }
 
 
