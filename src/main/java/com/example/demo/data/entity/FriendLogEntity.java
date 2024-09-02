@@ -21,17 +21,19 @@ public class FriendLogEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "from_id")
-    private String from_id;
+    private String fromId;
     @Column(name = "to_id")
-    private String to_id;
+    private String toId;
     @Column(name = "chat_log")
-    private String chat_log;
+    private String chatLog;
     @Column(name = "msg_time")
-    private Timestamp msg_time;
+    private Timestamp msgTime;
+    @Column(name="f_chat_room_id")
+    private Long fChatRoomId;
 
     @PrePersist
     protected void onCreate() {
         // 현재 한국 시간을 가져와서 msg_time에 설정
-        this.msg_time = Timestamp.valueOf(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
+        this.msgTime = Timestamp.valueOf(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
     }
 }
