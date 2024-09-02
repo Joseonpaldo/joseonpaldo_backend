@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +34,11 @@ public class ChatController {
 
     @GetMapping("/friendChat")
     public List<FriendLogEntity> getFriendChat(@RequestParam String from_id, @RequestParam String to_id) {
-        return friendLogRepository.findLogList(from_id,to_id);
+        List<FriendLogEntity> list=friendLogRepository.findLogList(from_id,to_id);
+        if(list==null){
+            return new ArrayList<>();
+        }
+        return list;
     }
 
 }
