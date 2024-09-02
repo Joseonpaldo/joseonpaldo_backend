@@ -23,9 +23,9 @@ public class ChatController {
                                               @RequestParam String to_id,
                                               @RequestParam String chat_log) {
         FriendLogEntity entity= FriendLogEntity.builder().
-                from_id(from_id).
-                to_id(to_id).
-                chat_log(chat_log).
+                fromId(from_id).
+                toId(to_id).
+                chatLog(chat_log).
                 build();
 
         friendLogRepository.insertLog(entity);
