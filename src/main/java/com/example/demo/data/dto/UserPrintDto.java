@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserPrintDto {
-    private Long user_id;   //그냥 인덱스
+    private Long userId;   //그냥 인덱스
     private String email;   //요놈이 아이디
     private String nickname;
     private String socialProvider;

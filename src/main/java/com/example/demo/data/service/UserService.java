@@ -5,6 +5,7 @@ import com.example.demo.data.repository.FriendRepositoryImpl;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.data.dto.UserPrintDto;
 import com.example.demo.data.entity.UserEntity;
 import com.example.demo.data.repository.UserRepositoryImpl;
 
@@ -17,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepositoryImpl userRepositoryImpl;
-    private final FriendRepositoryImpl friendImpl;
+    private final FriendRepositoryImpl friendRepositoryImpl;
 
     public UserEntity getUser(Long user_id) {
         UserEntity user;
@@ -29,8 +30,16 @@ public class UserService {
         return user;
     }
 
+    public UserEntity getUser(String userIdentifyId) {
+        return userRepositoryImpl.findByUserIdentifyId(userIdentifyId);
+    }
+
     public void save(UserEntity user) {
         userRepositoryImpl.save(user);
+    }
+
+    public UserPrintDto findUserPrintById(Long userId) {
+        return userRepositoryImpl.findUserPrintById(userId).get();
     }
 
     public void removeProviderAccessToken(Long userId) {
@@ -38,7 +47,6 @@ public class UserService {
         user.setProviderAccessToken(null);
         userRepositoryImpl.save(user);
     }
-
     @Transactional
     public void addFriend(UserEntity user,UserEntity friend){
         FriendRelationEntity friendRelationEntity= FriendRelationEntity.builder().
@@ -49,16 +57,16 @@ public class UserService {
                 user(friend).
                 friend(user).
                 build();
-        friendImpl.save(friendRelationEntity);
-        friendImpl.save(reverseEntity);
+        friendRepositoryImpl.save(friendRelationEntity);
+        friendRepositoryImpl.save(reverseEntity);
     }
 
     @Transactional
     public void deleteFriend(Long user_id, Long friend_id){
-        friendImpl.deleteFriend(user_id,friend_id);
+        friendRepositoryImpl.deleteFriend(user_id,friend_id);
     }
 
     public List<Long> getFriendList(Long userId){
-        return friendImpl.findFriendListByUserId(userId);
+        return friendRepositoryImpl.findFriendListByUserId(userId);
     }
 }
