@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class GameLogEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long log_id;
+    private Long logId;
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private UserEntity user;
@@ -33,5 +33,5 @@ public class GameLogEntity {
     private GameRoomEntity gameRoom;
     private int type;
     private String message;
-    private Timestamp created_at;
+    private Timestamp createdAt;
 }

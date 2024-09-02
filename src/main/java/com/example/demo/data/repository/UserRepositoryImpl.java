@@ -1,5 +1,6 @@
 package com.example.demo.data.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,7 @@ public interface UserRepositoryImpl extends JpaRepository<UserEntity, Long> {
     @Query("SELECT new com.example.demo.data.dto.UserPrintDto(u.user_id, u.email, u.nickname, u.socialProvider, u.profilePicture, u.tot_2p, u.win_2p, u.tot_4p, u.win_4p) " +
            "FROM UserEntity u WHERE u.user_id = :userId")
     Optional<UserPrintDto> findUserPrintById(Long userId);
+
+    @Query("SELECT u FROM UserEntity u ORDER BY u.winRate2p DESC")
+    public List<UserEntity> getTopThree2p();
 }

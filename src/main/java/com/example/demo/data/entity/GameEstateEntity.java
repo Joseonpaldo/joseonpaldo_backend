@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class GameEstateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long estate_id;
+    private Long estateId;
     private String name;
     private int price;
 }
