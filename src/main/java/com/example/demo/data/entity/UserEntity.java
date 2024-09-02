@@ -50,7 +50,19 @@ public class UserEntity {
     private BigDecimal winRate4p;
 
     @PrePersist
+    private void init() {
+        this.tot2p = 0;
+        this.win2p = 0;
+        this.tot4p = 0;
+        this.win4p = 0;
+        calculate();
+    }
+
     @PreUpdate
+    private void update() {
+        calculate();
+    }
+
     private void calculate() {
         calculateWinRate2p();
         calculateWinRate4p();
