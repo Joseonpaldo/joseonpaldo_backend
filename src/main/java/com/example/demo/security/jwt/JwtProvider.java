@@ -32,6 +32,7 @@ public class JwtProvider {
 
     public String createAccessToken(Long user_id, String provider) {
         Map<String, String> claims = new HashMap<>();
+        claims.put("user_id", user_id.toString());
         claims.put("provider", provider);
 
         ZonedDateTime now = ZonedDateTime.now(ZoneOffset.UTC);
@@ -49,6 +50,7 @@ public class JwtProvider {
 
     public String createRefreshToken(Long user_id, String provider) {
         Map<String, String> claims = new HashMap<>();
+        claims.put("user_id", user_id.toString());
         claims.put("provider", provider);
 
         ZonedDateTime now = ZonedDateTime.now(ZoneOffset.UTC);
@@ -78,6 +80,9 @@ public class JwtProvider {
         Claims claims = jwtParser.parseClaimsJws(token).getBody();
         ZonedDateTime now = ZonedDateTime.now(ZoneOffset.UTC);
 
+        System.out.println(claims.getExpiration().toInstant());
+        System.out.println(now.toInstant());
+
         return claims.getExpiration().toInstant().isAfter(now.toInstant());
     }
 
@@ -86,7 +91,7 @@ public class JwtProvider {
         Claims claims = jwtParser.parseClaimsJws(token).getBody();
 
         Map<String, String> map = new HashMap<>();
-        map.put("user_id", claims.getSubject());
+        map.put("user_id", claims.get("user_id", String.class));
         map.put("provider", claims.get("provider", String.class));
 
         return map;

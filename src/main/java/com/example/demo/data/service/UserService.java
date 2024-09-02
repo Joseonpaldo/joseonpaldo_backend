@@ -5,6 +5,7 @@ import com.example.demo.data.repository.FriendRepositoryImpl;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.data.dto.UserPrintDto;
 import com.example.demo.data.entity.UserEntity;
 import com.example.demo.data.repository.UserRepositoryImpl;
 
@@ -29,8 +30,16 @@ public class UserService {
         return user;
     }
 
+    public UserEntity getUser(String userIdentifyId) {
+        return userRepositoryImpl.findByUserIdentifyId(userIdentifyId);
+    }
+
     public void save(UserEntity user) {
         userRepositoryImpl.save(user);
+    }
+
+    public UserPrintDto findUserPrintById(Long userId) {
+        return userRepositoryImpl.findUserPrintById(userId).get();
     }
 
     public void removeProviderAccessToken(Long userId) {

@@ -36,7 +36,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain)
             throws ServletException, IOException {
-        System.out.println("JwtAuthFilter");
+        System.out.println("JWT AUTH FILTER : START");
+        System.out.println(request.getRequestURI());
 
         // Get the access token
         String authHeader = request.getHeader("Authorization");
@@ -59,10 +60,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if (accessToken !=null) {
             // Validattion Process for Access Token
+            System.out.println("JwtAuthFilter");
             String username = null;
             if (jwtProvider.validateToken(accessToken)) {
+                System.out.println("JwtAuthFilter - validateToken");
                 username = jwtProvider.getClaimsFromToken(accessToken).get("user_id");
                 if (!jwtProvider.checkTokenExpiration(accessToken)) {
+                    System.out.println("JwtAuthFilter - checkTokenExpiration - access token is expired");
                     // If the access token is expired, check the refresh token
                     if (jwtProvider.checkTokenExpiration(refreshToken)) {
                         // If the refresh token is valid, generate a new access token then proceed to the next filter
@@ -103,6 +107,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
+        System.out.println("JWT AUTH FILTER : END");
         filterChain.doFilter(request, response);
     }
 
