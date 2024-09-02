@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping("/user")
     public UserEntity getUser(@RequestParam("user_id") Long user_id) {
+        System.out.println("i am in here");
         return userService.getUser(user_id);
     }
-    
 }

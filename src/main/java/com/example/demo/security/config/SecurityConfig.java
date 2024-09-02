@@ -22,9 +22,9 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-	private final JwtAuthFilter jwtAuthFilter;
 	private final OAuth2SuccessHandler oauth2SuccessHandler;
 	private final CustomLogoutSuccessHandler logoutSuccessHandler;
+	private final JwtAuthFilter JwtAuthFilter;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -39,17 +39,17 @@ public class SecurityConfig {
 				})
 			)
 			.httpBasic(HttpBasicConfigurer::disable)
-			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 			.sessionManagement(sessionManagement -> sessionManagement
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.addFilterBefore(JwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 			.authorizeHttpRequests(request -> request
-				.requestMatchers("/api/health", "/api/login/oauth2/callback/*", "/").permitAll()
+				.requestMatchers("/api/health", "/api/login/oauth2/callback/*", "/", "returnCookie").permitAll()
 				.anyRequest().authenticated())
 			.oauth2Login(oauth2Login -> oauth2Login
 				.authorizationEndpoint(
 					endpoint -> {
-						endpoint.baseUri("/api/login/oauth2");
 						System.out.println("OAuth2 Login Endpoint: " + endpoint);
+						endpoint.baseUri("/api/login/oauth2");
 					}
 				)
 				.redirectionEndpoint(endpoint -> endpoint.baseUri("/api/login/oauth2/callback/*"))
