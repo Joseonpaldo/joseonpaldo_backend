@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserAccountService {
     private final UserRepositoryImpl userRepositoryImpl;
 
     public UserEntity getUser(Long user_id) {
@@ -32,11 +32,12 @@ public class UserService {
         user.setProviderAccessToken(null);
         userRepositoryImpl.save(user);
     }
-    public void updateFriendList(UserEntity entity){userRepo.createUser(entity);}
+    public void updateFriendList(UserEntity entity){userRepositoryImpl.save(entity);}
 
 
     // Delete
     public void deleteUser(Long user_id) {
-        userRepo.deleteUser(user_id);
+        UserEntity entity=userRepositoryImpl.getReferenceById(user_id);
+        userRepositoryImpl.delete(entity);
     }
 }

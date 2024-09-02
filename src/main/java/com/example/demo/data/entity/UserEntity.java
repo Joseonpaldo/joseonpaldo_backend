@@ -32,8 +32,6 @@ public class UserEntity {
     private String profilePicture;
     @Column(name = "provider_access_token")
     private String providerAccessToken;
-    @Column(name = "friend_list")
-    private String friendList;
 
     private int tot_2p;
     private int win_2p;

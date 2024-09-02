@@ -1,7 +1,7 @@
 package com.example.demo.data.repository;
 
 import com.example.demo.data.entity.FriendLogEntity;
-import com.example.demo.data.repository.inter.FriendLogRepositoryImpl;
+import com.example.demo.data.repository.FriendLogRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
