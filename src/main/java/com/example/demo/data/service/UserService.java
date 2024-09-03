@@ -2,7 +2,6 @@ package com.example.demo.data.service;
 
 import com.example.demo.data.entity.FriendRelationEntity;
 import com.example.demo.data.repository.FriendRepositoryImpl;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.data.dto.UserPrintDto;
@@ -49,24 +48,47 @@ public class UserService {
     }
     @Transactional
     public void addFriend(UserEntity user,UserEntity friend){
+        List<Long> myList=friendRepositoryImpl.findFriendListByUserId(user);
+        myList.add(friend.getUserId());
+
         FriendRelationEntity friendRelationEntity= FriendRelationEntity.builder().
                 user(user).
-                friend(friend).
+                friendList(myList).
                 build();
+        List<Long> reverseList = friendRepositoryImpl.findFriendListByUserId(friend);
+        reverseList.add(user.getUserId());
+
         FriendRelationEntity reverseEntity = FriendRelationEntity.builder().
                 user(friend).
-                friend(user).
+                friendList(reverseList).
                 build();
+
         friendRepositoryImpl.save(friendRelationEntity);
         friendRepositoryImpl.save(reverseEntity);
     }
 
     @Transactional
     public void deleteFriend(Long user_id, Long friend_id){
-        friendRepositoryImpl.deleteFriend(user_id,friend_id);
+        UserEntity user = userRepositoryImpl.findById(user_id).get();
+        UserEntity friend = userRepositoryImpl.findById(friend_id).get();
+
+        FriendRelationEntity myEntity=friendRepositoryImpl.findByUserId(user);
+        FriendRelationEntity reverseEntity=friendRepositoryImpl.findByUserId(friend);
+
+        List<Long> myList=myEntity.getFriendList();
+        myList.remove(friend.getUserId());
+        myEntity.setFriendList(myList);
+
+        List<Long> reverseList = reverseEntity.getFriendList();
+        reverseList.remove(user.getUserId());
+        reverseEntity.setFriendList(reverseList);
+
+        friendRepositoryImpl.save(myEntity);
+        friendRepositoryImpl.save(reverseEntity);
     }
 
     public List<Long> getFriendList(Long userId){
-        return friendRepositoryImpl.findFriendListByUserId(userId);
+        UserEntity entity=userRepositoryImpl.findById(userId).get();
+        return friendRepositoryImpl.findFriendListByUserId(entity);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.demo.data.contoller;
+package com.example.demo.data.controller;
 
 import com.example.demo.data.entity.UserEntity;
 import com.example.demo.data.service.UserAccountService;
@@ -7,9 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")

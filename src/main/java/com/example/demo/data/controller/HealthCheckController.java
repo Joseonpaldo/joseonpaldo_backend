@@ -1,4 +1,4 @@
-package com.example.demo.data.contoller;
+package com.example.demo.data.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.example.demo.data.contoller;
+package com.example.demo.data.controller;
 
 import com.example.demo.data.entity.UserEntity;
 import com.example.demo.data.service.UserService;
