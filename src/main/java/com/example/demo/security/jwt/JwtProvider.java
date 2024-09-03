@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -70,7 +71,7 @@ public class JwtProvider {
         try {
             Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
+        } catch (IllegalArgumentException | JwtException e) {
             return false;
         }
     }
@@ -79,7 +80,7 @@ public class JwtProvider {
         try {
             Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
         } catch (JwtException | IllegalArgumentException e) {
-            e.getStackTrace();
+            System.out.println("JwtAuthFilter - checkTokenExpiration - access token is expired");
             return false;
         }
         return true;
