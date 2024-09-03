@@ -87,13 +87,23 @@ public class JwtProvider {
     }
 
     public Map<String, String> getClaimsFromToken(String token) {
-        JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(secretKey).build();
-        Claims claims = jwtParser.parseClaimsJws(token).getBody();
-
-        Map<String, String> map = new HashMap<>();
-        map.put("user_id", claims.get("user_id", String.class));
-        map.put("provider", claims.get("provider", String.class));
-
-        return map;
+        try {
+            JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(secretKey).build();
+            Claims claims = jwtParser.parseClaimsJws(token).getBody();
+    
+            Map<String, String> map = new HashMap<>();
+            map.put("user_id", claims.get("user_id", String.class));
+            map.put("provider", claims.get("provider", String.class));
+    
+            return map;
+        } catch (ExpiredJwtException e) {
+            Claims claims = e.getClaims();
+    
+            Map<String, String> map = new HashMap<>();
+            map.put("user_id", claims.get("user_id", String.class));
+            map.put("provider", claims.get("provider", String.class));
+    
+            return map;
+        }
     }
 }
