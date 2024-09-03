@@ -76,14 +76,13 @@ public class JwtProvider {
     }
 
     public boolean checkTokenExpiration(String token) {
-        JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(secretKey).build();
-        Claims claims = jwtParser.parseClaimsJws(token).getBody();
-        ZonedDateTime now = ZonedDateTime.now(ZoneOffset.UTC);
-
-        System.out.println(claims.getExpiration().toInstant());
-        System.out.println(now.toInstant());
-
-        return claims.getExpiration().toInstant().isAfter(now.toInstant());
+        try {
+            Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
+        } catch (JwtException | IllegalArgumentException e) {
+            e.getStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public Map<String, String> getClaimsFromToken(String token) {
