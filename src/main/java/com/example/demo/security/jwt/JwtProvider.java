@@ -71,6 +71,8 @@ public class JwtProvider {
         try {
             Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
             return true;
+        } catch (ExpiredJwtException e){
+            return true;
         } catch (IllegalArgumentException | JwtException e) {
             return false;
         }
