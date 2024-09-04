@@ -100,6 +100,8 @@ public class JwtProvider {
             Claims claims = e.getClaims();
     
             Map<String, String> map = new HashMap<>();
+            System.out.println("User Id: " + claims.get("user_id", String.class));
+            System.out.println("Provider: " + claims.get("provider", String.class));
             map.put("user_id", claims.get("user_id", String.class));
             map.put("provider", claims.get("provider", String.class));
     
