@@ -14,19 +14,19 @@ public class FriendController {
     private final UserService userService;
 
     @GetMapping("/user/Friend")
-    public List<Long> getFriendList(@RequestParam Long user_id){
-        return userService.getFriendList(user_id);
+    public List<Long> getFriendList(@RequestParam Long userId){
+        return userService.getFriendList(userId);
     }
 
     @PutMapping("/user/Friend")
-    public void addFriend(@RequestParam Long user_id, @RequestParam Long friend_id) {
-        UserEntity user=userService.getUser(user_id);
-        UserEntity friend=userService.getUser(friend_id);
+    public void addFriend(@RequestParam Long userId, @RequestParam Long friendId) {
+        UserEntity user=userService.getUser(userId);
+        UserEntity friend=userService.getUser(friendId);
         userService.addFriend(user,friend);
     }
 
     @DeleteMapping("/user/Friend")
-    public void deleteFriend(@RequestParam Long user_id,@RequestParam Long friend_id){
-        userService.deleteFriend(user_id,friend_id);
+    public void deleteFriend(@RequestParam Long userId,@RequestParam Long friendId){
+        userService.deleteFriend(userId,friendId);
     }
 }

@@ -24,8 +24,8 @@ public class FriendRelationEntity {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserEntity user;
-    @Column(columnDefinition = "TEXT", name = "friend_list")
+    private UserEntity userId;
+    @Column(columnDefinition = "text", name = "friend_list")
     @Convert(converter = UserConvert.class)
     private List<Long> friendList;
 

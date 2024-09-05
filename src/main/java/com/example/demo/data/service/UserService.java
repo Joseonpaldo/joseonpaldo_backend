@@ -11,6 +11,7 @@ import com.example.demo.data.repository.UserRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,10 +20,10 @@ public class UserService {
     private final UserRepositoryImpl userRepositoryImpl;
     private final FriendRepositoryImpl friendRepositoryImpl;
 
-    public UserEntity getUser(Long user_id) {
+    public UserEntity getUser(Long userId) {
         UserEntity user;
         try {
-            user = userRepositoryImpl.findById(user_id).get();
+            user = userRepositoryImpl.findById(userId).get();
         } catch (Exception e) {
             return new UserEntity();
         }
@@ -46,36 +47,43 @@ public class UserService {
         user.setProviderAccessToken(null);
         userRepositoryImpl.save(user);
     }
+
     @Transactional
-    public void addFriend(UserEntity user,UserEntity friend){
-        List<Long> myList=friendRepositoryImpl.findFriendListByUserId(user);
-        myList.add(friend.getUserId());
+    public void addFriend(UserEntity userId, UserEntity friendId) {
+        // 두 사용자의 친구 관계를 가져옴
+        FriendRelationEntity userRelation = friendRepositoryImpl.findByUserId(userId.getUserId());
+        FriendRelationEntity friendRelation = friendRepositoryImpl.findByUserId(friendId.getUserId());
 
-        FriendRelationEntity friendRelationEntity= FriendRelationEntity.builder().
-                user(user).
-                friendList(myList).
-                build();
-        List<Long> reverseList = friendRepositoryImpl.findFriendListByUserId(friend);
-        reverseList.add(user.getUserId());
+        // user의 친구 관계 설정
+        if (userRelation == null) {
+            userRelation = new FriendRelationEntity();
+            userRelation.setUserId(userId);
+            userRelation.setFriendList(new ArrayList<>());
+        }
+        userRelation.getFriendList().add(friendId.getUserId());
 
-        FriendRelationEntity reverseEntity = FriendRelationEntity.builder().
-                user(friend).
-                friendList(reverseList).
-                build();
+        // friend의 친구 관계 설정
+        if (friendRelation == null) {
+            friendRelation = new FriendRelationEntity();
+            friendRelation.setUserId(friendId);
+            friendRelation.setFriendList(new ArrayList<>());
+        }
+        friendRelation.getFriendList().add(userId.getUserId());
 
-        friendRepositoryImpl.save(friendRelationEntity);
-        friendRepositoryImpl.save(reverseEntity);
+        // 두 엔티티를 저장
+        friendRepositoryImpl.save(userRelation);
+        friendRepositoryImpl.save(friendRelation);
     }
 
     @Transactional
-    public void deleteFriend(Long user_id, Long friend_id){
-        UserEntity user = userRepositoryImpl.findById(user_id).get();
-        UserEntity friend = userRepositoryImpl.findById(friend_id).get();
+    public void deleteFriend(Long userId, Long friendId) {
+        UserEntity user = userRepositoryImpl.findById(userId).get();
+        UserEntity friend = userRepositoryImpl.findById(friendId).get();
 
-        FriendRelationEntity myEntity=friendRepositoryImpl.findByUserId(user);
-        FriendRelationEntity reverseEntity=friendRepositoryImpl.findByUserId(friend);
+        FriendRelationEntity myEntity = friendRepositoryImpl.findByUserId(userId);
+        FriendRelationEntity reverseEntity = friendRepositoryImpl.findByUserId(friendId);
 
-        List<Long> myList=myEntity.getFriendList();
+        List<Long> myList = myEntity.getFriendList();
         myList.remove(friend.getUserId());
         myEntity.setFriendList(myList);
 
@@ -87,8 +95,7 @@ public class UserService {
         friendRepositoryImpl.save(reverseEntity);
     }
 
-    public List<Long> getFriendList(Long userId){
-        UserEntity entity=userRepositoryImpl.findById(userId).get();
-        return friendRepositoryImpl.findFriendListByUserId(entity);
+    public List<Long> getFriendList(Long userId) {
+        return friendRepositoryImpl.findFriendListByUserId(userId);
     }
 }

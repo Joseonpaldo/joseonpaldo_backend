@@ -13,8 +13,8 @@ import java.util.List;
 public interface FriendRepositoryImpl extends JpaRepository <FriendRelationEntity,Long> {
     @Query(value = "select friend_list from friend_relation where user_id=:userId",
             nativeQuery = true)
-    List<Long> findFriendListByUserId(@Param("userId") UserEntity userId);
+    List<Long> findFriendListByUserId(@Param("userId") Long userId);
 
     @Query(value = "select * from friend_relation where user_id=:userId",nativeQuery = true)
-    FriendRelationEntity findByUserId(@Param("userId") UserEntity userId);
+    FriendRelationEntity findByUserId(@Param("userId") Long userId);
 }
