@@ -1,7 +1,7 @@
 package com.example.demo.data.service;
 
 import com.example.demo.data.entity.FriendRelationEntity;
-import com.example.demo.data.repository.FriendRepositoryImpl;
+import com.example.demo.data.repository.FriendRelationRepositoryImpl;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.data.dto.UserPrintDto;
@@ -13,12 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepositoryImpl userRepositoryImpl;
-    private final FriendRepositoryImpl friendRepositoryImpl;
+    private final FriendRelationRepositoryImpl friendImpl;
+    private final UserRepositoryImpl userRepository;
 
     public UserEntity getUser(Long userId) {
         UserEntity user;
@@ -49,53 +51,39 @@ public class UserService {
     }
 
     @Transactional
-    public void addFriend(UserEntity userId, UserEntity friendId) {
-        // 두 사용자의 친구 관계를 가져옴
-        FriendRelationEntity userRelation = friendRepositoryImpl.findByUserId(userId.getUserId());
-        FriendRelationEntity friendRelation = friendRepositoryImpl.findByUserId(friendId.getUserId());
+    public void addFriend(Long userId, Long friendId) {
+        FriendRelationEntity userRelation = FriendRelationEntity.builder().
+                userId1(userId).userId2(friendId).build();
 
-        // user의 친구 관계 설정
-        if (userRelation == null) {
-            userRelation = new FriendRelationEntity();
-            userRelation.setUserId(userId);
-            userRelation.setFriendList(new ArrayList<>());
-        }
-        userRelation.getFriendList().add(friendId.getUserId());
-
-        // friend의 친구 관계 설정
-        if (friendRelation == null) {
-            friendRelation = new FriendRelationEntity();
-            friendRelation.setUserId(friendId);
-            friendRelation.setFriendList(new ArrayList<>());
-        }
-        friendRelation.getFriendList().add(userId.getUserId());
-
-        // 두 엔티티를 저장
-        friendRepositoryImpl.save(userRelation);
-        friendRepositoryImpl.save(friendRelation);
+        friendImpl.save(userRelation);
     }
 
     @Transactional
     public void deleteFriend(Long userId, Long friendId) {
-        UserEntity user = userRepositoryImpl.findById(userId).get();
-        UserEntity friend = userRepositoryImpl.findById(friendId).get();
-
-        FriendRelationEntity myEntity = friendRepositoryImpl.findByUserId(userId);
-        FriendRelationEntity reverseEntity = friendRepositoryImpl.findByUserId(friendId);
-
-        List<Long> myList = myEntity.getFriendList();
-        myList.remove(friend.getUserId());
-        myEntity.setFriendList(myList);
-
-        List<Long> reverseList = reverseEntity.getFriendList();
-        reverseList.remove(user.getUserId());
-        reverseEntity.setFriendList(reverseList);
-
-        friendRepositoryImpl.save(myEntity);
-        friendRepositoryImpl.save(reverseEntity);
+        friendImpl.deleteByUserId1OrUserId2AndUserId2OrUserId1(userId,friendId,friendId,userId);
     }
 
-    public List<Long> getFriendList(Long userId) {
-        return friendRepositoryImpl.findFriendListByUserId(userId);
+    public List<UserEntity> getFriendList(Long userId) {
+        List<FriendRelationEntity> relationList = friendImpl.findByUserId1OrUserId2(userId, userId);
+        //열에서 내 값 지우고 친구 id만 뽑아 리스트 저장
+        List<Long> extractedFriendsId = relationList.stream()
+                .flatMap(relation -> {
+                    if (relation.getUserId1().equals(userId)) {
+                        return Stream.of(relation.getUserId2());
+                    } else if (relation.getUserId2().equals(userId)) {
+                        return Stream.of(relation.getUserId1());
+                    }
+                    return Stream.empty();
+                })
+                .toList();
+
+        List<UserEntity> friendList = new ArrayList<>();
+
+        //뽑아낸 id로 userEntity 리스트 만들어 저장
+        for(Long id : extractedFriendsId){
+            friendList.add(userRepository.findByuserId(id));
+        }
+
+        return friendList;
     }
 }
