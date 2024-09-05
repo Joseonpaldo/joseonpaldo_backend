@@ -39,7 +39,7 @@ public class RankingController {
     public List<Map<String, String>> getFourToTen2p() {
         List<UserEntity> fourToTen2p = rankingService.getFourToTen2p();
         List<Map<String, String>> result = new ArrayList<>();
-        for (int i = 3; i < 10; i++) {
+        for (int i = 0; i < 7; i++) {
             Map<String, String> map = new HashMap<>();
             map.put("id", String.valueOf(fourToTen2p.get(i).getUserId()));
             map.put("name", fourToTen2p.get(i).getNickname());
@@ -69,7 +69,7 @@ public class RankingController {
     public List<Map<String, String>> getFourToTen4p() {
         List<UserEntity> fourToTen4p = rankingService.getFourToTen4p();
         List<Map<String, String>> result = new ArrayList<>();
-        for (int i = 3; i < 10; i++) {
+        for (int i = 0; i < 7; i++) {
             Map<String, String> map = new HashMap<>();
             map.put("id", String.valueOf(fourToTen4p.get(i).getUserId()));
             map.put("name", fourToTen4p.get(i).getNickname());

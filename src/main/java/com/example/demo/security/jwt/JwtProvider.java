@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -70,30 +71,43 @@ public class JwtProvider {
         try {
             Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
+        } catch (ExpiredJwtException e){
+            return true;
+        } catch (IllegalArgumentException | JwtException e) {
             return false;
         }
     }
 
     public boolean checkTokenExpiration(String token) {
-        JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(secretKey).build();
-        Claims claims = jwtParser.parseClaimsJws(token).getBody();
-        ZonedDateTime now = ZonedDateTime.now(ZoneOffset.UTC);
-
-        System.out.println(claims.getExpiration().toInstant());
-        System.out.println(now.toInstant());
-
-        return claims.getExpiration().toInstant().isAfter(now.toInstant());
+        try {
+            Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
+        } catch (JwtException | IllegalArgumentException e) {
+            System.out.println("JwtAuthFilter - checkTokenExpiration - access token is expired");
+            return false;
+        }
+        return true;
     }
 
     public Map<String, String> getClaimsFromToken(String token) {
-        JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(secretKey).build();
-        Claims claims = jwtParser.parseClaimsJws(token).getBody();
-
-        Map<String, String> map = new HashMap<>();
-        map.put("user_id", claims.get("user_id", String.class));
-        map.put("provider", claims.get("provider", String.class));
-
-        return map;
+        try {
+            JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(secretKey).build();
+            Claims claims = jwtParser.parseClaimsJws(token).getBody();
+    
+            Map<String, String> map = new HashMap<>();
+            map.put("user_id", claims.get("user_id", String.class));
+            map.put("provider", claims.get("provider", String.class));
+    
+            return map;
+        } catch (ExpiredJwtException e) {
+            Claims claims = e.getClaims();
+    
+            Map<String, String> map = new HashMap<>();
+            System.out.println("User Id: " + claims.get("user_id", String.class));
+            System.out.println("Provider: " + claims.get("provider", String.class));
+            map.put("user_id", claims.get("user_id", String.class));
+            map.put("provider", claims.get("provider", String.class));
+    
+            return map;
+        }
     }
 }
