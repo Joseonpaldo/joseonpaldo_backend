@@ -1,16 +1,10 @@
 package com.example.demo.data.entity;
 
-import com.example.demo.data.convert.UserConvert;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.Type;
-import org.hibernate.type.SqlTypes;
-
-import java.util.List;
 
 @Entity
 @Table(name = "friend_relation")
@@ -22,11 +16,9 @@ public class FriendRelationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity userId;
-    @Column(columnDefinition = "text", name = "friend_list")
-    @Convert(converter = UserConvert.class)
-    private List<Long> friendList;
+    @Column(name = "user_id_1")
+    private Long userId1;
+    @Column(name = "user_id_2")
+    private Long userId2;
 
 }
