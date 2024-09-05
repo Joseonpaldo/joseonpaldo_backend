@@ -1,25 +1,18 @@
 package com.example.demo.data.controller;
 
-import com.example.demo.data.entity.FriendRelationEntity;
 import com.example.demo.data.entity.UserEntity;
 import com.example.demo.data.repository.FriendRelationRepositoryImpl;
-import com.example.demo.data.repository.UserRepositoryImpl;
 import com.example.demo.data.service.UserService;
-import com.example.demo.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/friend")
 @RequiredArgsConstructor
 public class FriendRestController {
     private final FriendRelationRepositoryImpl friendRelationRepository;
-    private final JwtProvider jwtProvider;
     private final UserService userService;
 
     @PostMapping("/check")
@@ -31,24 +24,18 @@ public class FriendRestController {
         return true;
     }
 
-    @PutMapping("/")
-    public void addFriend(@RequestParam String jwt, @RequestParam Long friendId){
-        Map<String,String> map=jwtProvider.getClaimsFromToken(jwt);
-        Long userId=Long.parseLong(map.get("user_id"));
+    @PutMapping("")
+    public void addFriend(@RequestParam Long userId, @RequestParam Long friendId){
         userService.addFriend(userId,friendId);
     }
 
-    @DeleteMapping("/")
-    public void deleteFriend(@RequestParam String jwt, @RequestParam Long friendId){
-        Map<String,String> map=jwtProvider.getClaimsFromToken(jwt);
-        Long userId=Long.parseLong(map.get("user_id"));
+    @DeleteMapping("")
+    public void deleteFriend(@RequestParam Long userId, @RequestParam Long friendId){
         userService.deleteFriend(userId,friendId);
     }
 
-    @GetMapping("/")
-    public List<UserEntity> getList(@RequestParam String jwt){
-        Map<String, String> map = jwtProvider.getClaimsFromToken(jwt);
-        Long userId = Long.parseLong(map.get("user_id"));
+    @GetMapping("")
+    public List<UserEntity> getList(@RequestParam Long userId){
         return userService.getFriendList(userId);
     }
 }
