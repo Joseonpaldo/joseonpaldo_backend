@@ -16,6 +16,7 @@ public interface UserRepositoryImpl extends JpaRepository<UserEntity, Long> {
            "FROM UserEntity u WHERE u.userId = :userId")
     Optional<UserPrintDto> findUserPrintById(Long userId);
 
+    UserEntity findByuserId(Long user_id);
 
     // Ranking Stuff
     public List<UserEntity> findTop3ByOrderByWinRate2pDesc();

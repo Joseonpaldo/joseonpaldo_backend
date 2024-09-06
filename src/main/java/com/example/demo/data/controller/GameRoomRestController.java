@@ -55,6 +55,11 @@ public class GameRoomRestController {
         return new ResponseEntity(entity.getRoomId(), HttpStatus.OK);
     }
 
+    //게임방제목
+    @GetMapping("/roomName/{roomId}")
+    public String getRoomName(@PathVariable Long roomId) {
+        return gameRoomService.getRoomNameByRoomId(roomId);
+    }
 
 
 }
