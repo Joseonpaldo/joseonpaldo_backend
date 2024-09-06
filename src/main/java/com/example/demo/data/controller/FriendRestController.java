@@ -1,7 +1,6 @@
 package com.example.demo.data.controller;
 
 import com.example.demo.data.dto.UserPrintDto;
-import com.example.demo.data.entity.UserEntity;
 import com.example.demo.data.repository.FriendRelationRepositoryImpl;
 import com.example.demo.data.service.UserService;
 import lombok.RequiredArgsConstructor;
