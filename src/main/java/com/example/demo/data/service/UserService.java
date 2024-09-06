@@ -63,7 +63,7 @@ public class UserService {
         friendImpl.deleteByUserId1OrUserId2AndUserId2OrUserId1(userId,friendId,friendId,userId);
     }
 
-    public List<UserEntity> getFriendList(Long userId) {
+    public List<UserPrintDto> getFriendList(Long userId) {
         List<FriendRelationEntity> relationList = friendImpl.findByUserId1OrUserId2(userId, userId);
         //열에서 내 값 지우고 친구 id만 뽑아 리스트 저장
         List<Long> extractedFriendsId = relationList.stream()
@@ -77,11 +77,23 @@ public class UserService {
                 })
                 .toList();
 
-        List<UserEntity> friendList = new ArrayList<>();
+        List<UserPrintDto> friendList = new ArrayList<>();
 
         //뽑아낸 id로 userEntity 리스트 만들어 저장
         for(Long id : extractedFriendsId){
-            friendList.add(userRepository.findByuserId(id));
+            UserEntity user = userRepositoryImpl.findById(id).get();
+            UserPrintDto userPrintDto=UserPrintDto.builder().
+                    userId(user.getUserId()).
+                    email(user.getEmail()).
+                    nickname(user.getNickname()).
+                    tot_4p(user.getTot4p()).
+                    tot_2p(user.getTot2p()).
+                    win_4p(user.getWin4p()).
+                    win_2p(user.getWin2p()).
+                    socialProvider(user.getSocialProvider()).
+                    profilePicture(user.getProfilePicture()).
+                    build();
+            friendList.add(userPrintDto);
         }
 
         return friendList;
