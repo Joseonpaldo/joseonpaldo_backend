@@ -83,7 +83,7 @@ public class UserService {
         for(Long id : extractedFriendsId){
             UserEntity user = userRepositoryImpl.findById(id).get();
             UserPrintDto userPrintDto=UserPrintDto.builder().
-                    userId(user.getUserId()).
+                    user_id(user.getUserId()).
                     email(user.getEmail()).
                     nickname(user.getNickname()).
                     tot_4p(user.getTot4p()).
