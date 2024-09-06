@@ -1,5 +1,6 @@
 package com.example.demo.data.controller;
 
+import com.example.demo.data.dto.UserPrintDto;
 import com.example.demo.data.entity.UserEntity;
 import com.example.demo.data.repository.FriendRelationRepositoryImpl;
 import com.example.demo.data.service.UserService;
@@ -35,7 +36,7 @@ public class FriendRestController {
     }
 
     @GetMapping("")
-    public List<UserEntity> getList(@RequestParam Long userId){
+    public List<UserPrintDto> getList(@RequestParam Long userId){
         return userService.getFriendList(userId);
     }
 }
