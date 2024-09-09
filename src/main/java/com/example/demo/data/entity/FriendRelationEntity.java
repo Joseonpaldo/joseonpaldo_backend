@@ -7,11 +7,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "friend_relation")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
+@Table(name = "friend_relation", indexes = {
+        @Index(name = "idx_friend_relation_user_ids", columnList = "user_id_1, user_id_2")
+})
 public class FriendRelationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

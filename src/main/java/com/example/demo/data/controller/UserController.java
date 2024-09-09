@@ -25,8 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserController {
     private final UserService userService;
     private final JwtProvider jwtProvider;
-
-    @GetMapping("/user")
     public UserEntity getUser(@RequestParam("user_id") Long user_id) {
         System.out.println("i am in here");
         return userService.getUser(user_id);
