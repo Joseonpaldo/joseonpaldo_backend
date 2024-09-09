@@ -1,6 +1,7 @@
 package com.example.demo.data.service;
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+import com.example.demo.data.entity.FriendRelationEntity;
+import com.example.demo.data.repository.FriendRelationRepositoryImpl;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.data.dto.UserPrintDto;
@@ -8,12 +9,18 @@ import com.example.demo.data.entity.UserEntity;
 import com.example.demo.data.repository.UserRepositoryImpl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepositoryImpl userRepositoryImpl;
-    
+    private final FriendRelationRepositoryImpl friendImpl;
+
     public UserEntity getUser(Long user_id) {
         UserEntity user;
         try {
@@ -41,4 +48,13 @@ public class UserService {
         user.setProviderAccessToken(null);
         userRepositoryImpl.save(user);
     }
+
+    @Transactional
+    public void addFriend(Long userId, Long friendId) {
+        FriendRelationEntity userRelation = FriendRelationEntity.builder().
+                userId1(userId).userId2(friendId).build();
+
+        friendImpl.save(userRelation);
+    }
+
 }

@@ -11,6 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GameRoomService {
     final private GameRoomRepositoryImpl impl;
+    private final GameRoomRepositoryImpl gameRoomRepositoryImpl;
 
 
     //시작 전 게임방
@@ -36,4 +37,13 @@ public class GameRoomService {
     }
 
 
+    //게임방제목
+    public String getRoomNameByRoomId(Long roomId) {
+        GameRoomEntity gameRoom = impl.findByRoomId(roomId);
+        if (gameRoom != null) {
+            return gameRoom.getRoomName();
+        } else {
+            return null;
+        }
+    }
 }

@@ -2,12 +2,14 @@ package com.example.demo.data.dto;
 
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserPrintDto {
     private Long user_id;   //그냥 인덱스
     private String email;   //요놈이 아이디
