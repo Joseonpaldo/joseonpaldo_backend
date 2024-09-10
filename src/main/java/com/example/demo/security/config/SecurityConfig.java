@@ -43,7 +43,8 @@ public class SecurityConfig {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.addFilterBefore(JwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 			.authorizeHttpRequests(request -> request
-				.requestMatchers("/api/health", "/api/login/oauth2/callback/*", "/", "returnCookie").permitAll()
+				.requestMatchers("/api/health", "/api/login/oauth2/callback/*", "/", "returnCookie"
+				,"/api/swagger-ui/**","/api/v3/api-docs/**").permitAll()
 				.anyRequest().authenticated())
 			.oauth2Login(oauth2Login -> oauth2Login
 				.authorizationEndpoint(

@@ -42,6 +42,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         // Get the access token
         String authHeader = request.getHeader("Authorization");
         String accessToken = null;
+        String path=request.getRequestURI();
+        if(path.startsWith("/api/swagger-ui") || path.startsWith("/api/v3/api-docs")){
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             accessToken = authHeader.substring(7);
