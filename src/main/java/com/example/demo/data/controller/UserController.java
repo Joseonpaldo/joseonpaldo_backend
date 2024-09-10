@@ -1,7 +1,7 @@
 package com.example.demo.data.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.demo.data.service.ChatRoomService;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.data.dto.UserPrintDto;
 import com.example.demo.data.entity.UserEntity;
@@ -13,9 +13,6 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -24,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserController {
     private final UserService userService;
     private final JwtProvider jwtProvider;
+    private final ChatRoomService chatRoomService;
 
     @GetMapping("/user")
     public UserEntity getUser(@RequestParam("user_id") Long user_id) {
