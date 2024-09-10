@@ -10,7 +10,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
@@ -26,18 +29,15 @@ import java.util.stream.Collectors;
 @Tag(name="친구 채팅 api controller", description = "1대1 친구 채팅방을 불러오는 method 들이 있는 api controller")
 @RequestMapping("/api")
 @RestController
+@RequiredArgsConstructor
 public class ChattingController {
-
-
-    @Autowired
-    private ChatRoomService chatRoomService;
-
-    @Autowired
-    private ChatMessageService chatMessageService;
+    private final ChatRoomService chatRoomService;
+    private final ChatMessageService chatMessageService;
 
 
     @Operation(operationId = "createOrGetChatRoom",summary = "1대1 친구 채팅방을 만들거나 가져오기",
             description = "유저아이디와 친구아이디를 가지고 있는 룸을 조회하여 roomId가 담긴 dto 반환 조회되지 않으면 새로 생성한 roomId를 담아서 dto 를 반환한다.",
+            security = {@SecurityRequirement(name = "custom-auth-token")},
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -68,6 +68,7 @@ public class ChattingController {
 
     @Operation(operationId = "getMessagesByChatRoom",summary = "친구와의 채팅 기록을 불러오기",
             description = "roomId를 받아서 해당 roomId에 배정되있는 친구와의 채팅 기록을 불러오기",
+            security = {@SecurityRequirement(name = "custom-auth-token")},
             responses = {
                     @ApiResponse(
                             responseCode = "200",
