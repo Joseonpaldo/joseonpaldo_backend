@@ -3,11 +3,13 @@ package com.example.demo.data.controller;
 import com.example.demo.data.dto.UserPrintDto;
 import com.example.demo.data.repository.FriendRelationRepositoryImpl;
 import com.example.demo.data.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Tag(name = "친구 관리 api controller", description = ""
+)
 @RestController
 @RequestMapping("/api/friend")
 @RequiredArgsConstructor
