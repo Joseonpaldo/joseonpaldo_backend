@@ -73,7 +73,7 @@ logging:
     com.example.demo: TRACE
 springdoc:
   api-docs:
-    path: /v3/api-docs
+    path: /api/v3/api-docs
   swagger-ui:
     path: /api/swagger-ui
-    url: /v3/api-docs
+    url: /api/v3/api-docs

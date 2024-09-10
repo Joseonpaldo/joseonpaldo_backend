@@ -44,7 +44,7 @@ public class SecurityConfig {
 			.addFilterBefore(JwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 			.authorizeHttpRequests(request -> request
 				.requestMatchers("/api/health", "/api/login/oauth2/callback/*", "/", "returnCookie"
-				,"/api/swagger-ui/**","/api/v3/api-docs/**").permitAll()
+				,"/api/swagger-ui/**","/api/v3/api-docs/**","/webjars/**","/swagger-resources/**").permitAll()
 				.anyRequest().authenticated())
 			.oauth2Login(oauth2Login -> oauth2Login
 				.authorizationEndpoint(

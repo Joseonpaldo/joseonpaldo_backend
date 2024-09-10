@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class swaggerConfig {
 
     @Bean
-    public OpenAPI customOpenAPI(@Value("1.6.9") String springDocVersion) {
+    public OpenAPI customOpenAPI(@Value("2.6.0") String springDocVersion) {
         return new OpenAPI()
                 .info(new Info()
                         .title("조선팔도 Rest API DOCS")

@@ -66,21 +66,6 @@ public class ChattingController {
         return ResponseEntity.ok().body(Map.of("roomId", chatRoom.getRoomId()));
     }
 
-    // 특정 채팅방의 모든 메시지 조회
-    @GetMapping("/room/{chatRoomId}/messages")
-    public ResponseEntity<?> getMessagesByChatRoomId(@PathVariable Long chatRoomId) {
-        List<ChatMessageEntity> messages = chatMessageService.getMessagesByChatRoomId(chatRoomId);
-
-        System.out.println("조회된 메시지: " + messages); // 메시지 확인을 위한 로그 추가
-
-        // 메시지가 존재하는지 확인
-        if (messages.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.ok(messages);
-    }
-
     @Operation(operationId = "getMessagesByChatRoom",summary = "친구와의 채팅 기록을 불러오기",
             description = "roomId를 받아서 해당 roomId에 배정되있는 친구와의 채팅 기록을 불러오기",
             responses = {
