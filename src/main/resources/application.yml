@@ -71,3 +71,9 @@ logging:
   level:
     org.springframework.web.servlet.DispatcherServlet: OFF
     com.example.demo: TRACE
+springdoc:
+  api-docs:
+    path: /api/v3/api-docs
+  swagger-ui:
+    path: /api/swagger-ui
+    url: /api/v3/api-docs
