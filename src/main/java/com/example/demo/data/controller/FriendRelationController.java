@@ -54,31 +54,21 @@ public class FriendRelationController {
                     )
             )
     })
-    @PostMapping("/check")
-    public boolean listCheck(Long user_id, Long friend_id){
-        //친구 목록에 있다면 false 리턴
-        return friendRelationRepository.countByUserId1OrUserId2AndUserId2OrUserId1(user_id, friend_id, friend_id, user_id) != 1;
+    @PostMapping("/check/{user_id}/{friend_id}")
+    public boolean listCheck(@PathVariable Long user_id, @PathVariable Long friend_id){
+        // 자기 자신을 친구로 추가하는 상황 방지
+        if (user_id.equals(friend_id)) {
+
+            System.out.println("false");
+            return false; // 자기 자신을 친구로 추가할 수 없으므로 false 반환
+        }
+        // 친구 관계가 있으면 true, 없으면 false
+
+        System.out.println("true");
+        return friendRelationRepository.countByUserId1AndUserId2OrUserId1AndUserId2(user_id, friend_id, friend_id, user_id) == 1;
     }
 
-    @Operation(operationId = "getFriendList",summary = "친구 목록 얻어오기",
-            description = "JWT를 받아서 해당 유저아이디의 친구목록을 반환",
-            security = {@SecurityRequirement(name = "custom-auth-token")},
-    responses = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "친구목록을 반환한다."
-                    , content = @Content(
-                            schema = @Schema(type = "array", implementation = UserEntity.class)
-            )
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "로그인 되지 않은 상태에서의 요청 혹은 엑세스 토큰의 expire",
-                    content = @Content(
-                            schema = @Schema(implementation = void.class)
-                    )
-            )
-    })
+
     @GetMapping("/list/{jwt}")
     public List<UserEntity> getList(@PathVariable String jwt){
         Map<String, String> map = jwtProvider.getClaimsFromToken(jwt);
