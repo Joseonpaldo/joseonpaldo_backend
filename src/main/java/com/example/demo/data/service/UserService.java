@@ -1,7 +1,11 @@
 package com.example.demo.data.service;
 
+import com.example.demo.data.entity.ChatRoomEntity;
 import com.example.demo.data.entity.FriendRelationEntity;
+import com.example.demo.data.repository.ChatMessageRepository;
+import com.example.demo.data.repository.ChatRoomRepository;
 import com.example.demo.data.repository.FriendRelationRepositoryImpl;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.data.dto.UserPrintDto;
@@ -21,6 +25,9 @@ import java.util.stream.Stream;
 public class UserService {
     private final UserRepositoryImpl userRepositoryImpl;
     private final FriendRelationRepositoryImpl friendImpl;
+    private final ChatRoomRepository chatRoomRepository;
+    private final FriendRelationRepositoryImpl friendRelationRepositoryImpl;
+    private final ChatMessageRepository chatMessageRepository;
 
     public UserEntity getUser(Long user_id) {
         UserEntity user;
@@ -58,16 +65,35 @@ public class UserService {
         friendImpl.save(userRelation);
     }
 
+    // UserService.java
     @Transactional
-    public void deleteFriend(Long userId1, Long userId2) {
-        Optional<FriendRelationEntity> relation = friendImpl
-                .findByUserId1AndUserId2(userId1, userId2);
+    public void deleteFriend(Long userId, Long friendId) {
+        //친구관계 조회
+        Optional<FriendRelationEntity> optionalFriendRelation = friendRelationRepositoryImpl.findFriendRelation(userId, friendId);
 
-        if (!relation.isPresent()) {
-            relation = friendImpl
-                    .findByUserId1AndUserId2(userId2, userId1);
+        if (optionalFriendRelation.isEmpty()) {
+            throw new EntityNotFoundException("해당 친구 관계를 찾을 수 없습니다.");
         }
 
-        relation.ifPresent(friendImpl::delete);
+        FriendRelationEntity friendRelation = optionalFriendRelation.get();
+
+        //해당 친구관계로 연결된 채팅방 조회
+        Optional<ChatRoomEntity> optionalChatRoom = chatRoomRepository.findByFriendRelation(friendRelation);
+
+        if (optionalChatRoom.isPresent()) {
+            ChatRoomEntity chatRoom = optionalChatRoom.get();
+
+            //채팅방의 모든 메시지 삭제
+            chatMessageRepository.deleteByChatRoom(chatRoom);
+
+            //채팅방 삭제
+            chatRoomRepository.delete(chatRoom);
+        }
+
+        //친구관계 삭제
+        friendRelationRepositoryImpl.delete(friendRelation);
     }
+
+
+
 }

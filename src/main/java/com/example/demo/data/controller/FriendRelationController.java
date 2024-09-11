@@ -2,6 +2,7 @@ package com.example.demo.data.controller;
 
 import com.example.demo.data.entity.FriendRelationEntity;
 import com.example.demo.data.entity.UserEntity;
+import com.example.demo.data.repository.ChatRoomRepository;
 import com.example.demo.data.repository.FriendRelationRepositoryImpl;
 import com.example.demo.data.repository.UserRepositoryImpl;
 import com.example.demo.data.service.UserService;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ public class FriendRelationController {
     private final UserRepositoryImpl userRepository;
     private final JwtProvider jwtProvider;
     private final UserService userService;
+    private final ChatRoomRepository chatRoomRepository;
 
     @Operation(operationId = "friendCheck",summary = "현재 친구인지 확인하기",
             description = "친구 추가 및 삭제를 할때 현재 친구로 등록되어 있는지 확인하는 메소드",
@@ -138,8 +141,9 @@ public class FriendRelationController {
     @DeleteMapping("/delete/{userId}/{friendId}")
     public void deleteFriend(@PathVariable Long userId, @PathVariable Long friendId){
 
+        System.out.println("user" + userId + "friend" + friendId);
         System.out.println("삭제완료");
-
+        // 서로 친구 관계 삭제
         userService.deleteFriend(userId, friendId);
     }
 
