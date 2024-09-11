@@ -29,4 +29,6 @@ public class GameRoomEntity {
     @ColumnDefault("0")
     private int currPlayer;
     private int budget;
+    @Column(name = "room_image")
+    private String roomImage;
 }

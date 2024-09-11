@@ -1,6 +1,7 @@
 package com.example.demo.data.controller;
 
 import com.example.demo.data.entity.GameRoomEntity;
+import com.example.demo.data.repository.GameRoomRepositoryImpl;
 import com.example.demo.data.service.GameRoomService;
 import com.example.demo.data.service.UserService;
 import com.example.demo.security.jwt.JwtProvider;
@@ -25,7 +26,7 @@ public class GameRoomRestController {
     final private GameRoomService gameRoomService;
     final private UserService userService;
     final private JwtProvider jwtProvider;
-
+    private final GameRoomRepositoryImpl gameRoomRepositoryImpl;
 
 
     // GameRoom
@@ -144,5 +145,25 @@ public class GameRoomRestController {
         return gameRoomService.getRoomNameByRoomId(roomId);
     }
 
+    @PutMapping("/game/room/image/{roomId}")
+    public void roomImage(@PathVariable Long roomId, String roomImage){
+        GameRoomEntity gameRoom = gameRoomRepositoryImpl.findByRoomId(roomId);
+        gameRoom.setRoomImage(roomImage);
+
+        gameRoomRepositoryImpl.save(gameRoom);
+    }
+
+    //lobby 방 삭제, 체크버튼
+    @GetMapping("/game/myRoom/{roomId}/{userId}")
+    public boolean roomCheck(@PathVariable Long roomId, @PathVariable Long userId){
+        return gameRoomService.roomDeleteButton(roomId, userId);
+    }
+
+
+    @DeleteMapping("/game/room/delete/{roomId}/{userId}")
+    public void roomDelete(@PathVariable Long roomId, @PathVariable Long userId){
+
+        gameRoomService.roomDelete(roomId, userId);
+    }
 
 }

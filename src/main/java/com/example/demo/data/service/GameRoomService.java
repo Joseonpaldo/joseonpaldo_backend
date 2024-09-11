@@ -1,9 +1,11 @@
 package com.example.demo.data.service;
 
 import com.example.demo.data.entity.GameRoomEntity;
+import com.example.demo.data.entity.UserEntity;
 import com.example.demo.data.repository.GameRoomRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,6 +14,7 @@ import java.util.List;
 public class GameRoomService {
     final private GameRoomRepositoryImpl impl;
     private final GameRoomRepositoryImpl gameRoomRepositoryImpl;
+    private final UserService userService;
 
 
     //시작 전 게임방
@@ -45,5 +48,22 @@ public class GameRoomService {
         } else {
             return null;
         }
+    }
+
+    public boolean roomDeleteButton(Long roomId, Long userId){
+
+        var gameRoomEntity = impl.findByRoomId(roomId);
+        if (gameRoomEntity == null) {
+            return false;
+        }
+        System.out.println(gameRoomEntity.getUser().getUserId().equals(userId));
+        return gameRoomEntity.getUser().getUserId().equals(userId);
+    }
+
+    @Transactional
+    public void roomDelete(Long roomId, Long userId) {
+        UserEntity user = userService.getUser(userId);
+
+        impl.deleteByRoomIdAndUser(roomId, user);
     }
 }
