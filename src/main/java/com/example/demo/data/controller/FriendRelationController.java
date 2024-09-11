@@ -135,4 +135,12 @@ public class FriendRelationController {
         userService.addFriend(userId,friendId);
     }
 
+    @DeleteMapping("/delete/{userId}/{friendId}")
+    public void deleteFriend(@PathVariable Long userId, @PathVariable Long friendId){
+
+        System.out.println("삭제완료");
+
+        userService.deleteFriend(userId, friendId);
+    }
+
 }

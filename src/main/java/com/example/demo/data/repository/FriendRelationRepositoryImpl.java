@@ -22,5 +22,6 @@ public interface FriendRelationRepositoryImpl extends JpaRepository<FriendRelati
     Optional<FriendRelationEntity> findFriendRelation(@Param("userId1") Long userId1, @Param("userId2") Long userId2);
 
     Optional<FriendRelationEntity> findByUserId1AndUserId2OrUserId2AndUserId1(Long userId1, Long userId2, Long userId2Reversed, Long userId1Reversed);
+    Optional<FriendRelationEntity> findByUserId1AndUserId2(Long userId1, Long userId2);
 
 }

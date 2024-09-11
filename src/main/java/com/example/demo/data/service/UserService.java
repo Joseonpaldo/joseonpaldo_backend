@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
@@ -57,4 +58,16 @@ public class UserService {
         friendImpl.save(userRelation);
     }
 
+    @Transactional
+    public void deleteFriend(Long userId1, Long userId2) {
+        Optional<FriendRelationEntity> relation = friendImpl
+                .findByUserId1AndUserId2(userId1, userId2);
+
+        if (!relation.isPresent()) {
+            relation = friendImpl
+                    .findByUserId1AndUserId2(userId2, userId1);
+        }
+
+        relation.ifPresent(friendImpl::delete);
+    }
 }
