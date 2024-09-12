@@ -43,5 +43,4 @@ public class GameDataEntity {
     @JdbcTypeCode(SqlTypes.JSON)
     private JsonNode userEstate;
     private int myTurn;
-    private String map;
 }
