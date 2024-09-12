@@ -59,27 +59,27 @@ public class UserEntity {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String providerAccessToken;
 
-    @Column(columnDefinition = "int default 0")
+    @Column(name = "tot2p")
     @Schema(description = "2인 게임 총 횟수", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "17")
     private int tot2p = 0;
 
-    @Column(columnDefinition = "int default 0")
+    @Column(name = "win2p"
     @Schema(description = "2인 게임 승리 횟수", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "5")
     private int win2p = 0;
 
-    @Column(columnDefinition = "int default 0")
+    @Column(name = "tot4p")
     @Schema(description = "4인 게임 총 횟수", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "20")
     private int tot4p = 0;
 
-    @Column(columnDefinition = "int default 0")
+    @Column(name = "win4p")
     @Schema(description = "4인 게임 승리 횟수", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "4")
     private int win4p = 0;
 
-    @Column(precision = 5, scale = 2, columnDefinition = "decimal(5,2) default 0.00")
+    @Column(name = "win_rate2p)
     @Schema(description = "2인 게임 승률", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "29.41")
     private BigDecimal winRate2p;
 
-    @Column(precision = 5, scale = 2, columnDefinition = "decimal(5,2) default 0.00")
+    @Column(name = "win_rate4p)
     @Schema(description = "4인 게임 승률", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "20.00")
     private BigDecimal winRate4p;
 
