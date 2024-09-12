@@ -1,12 +1,11 @@
 package com.example.demo.data.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "game_room")
@@ -29,6 +28,5 @@ public class GameRoomEntity {
     @ColumnDefault("0")
     private int currPlayer;
     private int budget;
-    @Column(name = "room_image")
-    private String roomImage;
+    private String currentMap;
 }
