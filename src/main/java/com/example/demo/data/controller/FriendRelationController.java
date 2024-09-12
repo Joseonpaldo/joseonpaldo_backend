@@ -68,7 +68,25 @@ public class FriendRelationController {
         return friendRelationRepository.countByUserId1AndUserId2OrUserId1AndUserId2(user_id, friend_id, friend_id, user_id) == 1;
     }
 
-
+    @Operation(operationId = "getFriendList",summary = "친구 목록 얻어오기",
+            description = "JWT를 받아서 해당 유저아이디의 친구목록을 반환",
+            security = {@SecurityRequirement(name = "custom-auth-token")},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "친구목록을 반환한다."
+                            , content = @Content(
+                            schema = @Schema(type = "array", implementation = UserEntity.class)
+                    )
+                    ),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "로그인 되지 않은 상태에서의 요청 혹은 엑세스 토큰의 expire",
+                            content = @Content(
+                                    schema = @Schema(implementation = void.class)
+                            )
+                    )
+            })
     @GetMapping("/list/{jwt}")
     public List<UserEntity> getList(@PathVariable String jwt){
         Map<String, String> map = jwtProvider.getClaimsFromToken(jwt);
@@ -128,6 +146,16 @@ public class FriendRelationController {
         userService.addFriend(userId,friendId);
     }
 
+    @Operation(operationId = "deleteFriend", summary = "친구관게를 끊기",
+    description = "유저아이디와 친구아이디를 받아서 친구관계를 삭제하는 메소드",
+    responses = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = @Content(
+                            schema = @Schema(implementation = void.class)
+                    )
+            )
+    })
     @DeleteMapping("/delete/{userId}/{friendId}")
     public void deleteFriend(@PathVariable Long userId, @PathVariable Long friendId){
 

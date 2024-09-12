@@ -145,21 +145,47 @@ public class GameRoomRestController {
         return gameRoomService.getRoomNameByRoomId(roomId);
     }
 
-    @PutMapping("/game/room/image/{roomId}")
-    public void roomImage(@PathVariable Long roomId, String roomImage){
-        GameRoomEntity gameRoom = gameRoomRepositoryImpl.findByRoomId(roomId);
-        gameRoom.setRoomImage(roomImage);
-
-        gameRoomRepositoryImpl.save(gameRoom);
-    }
-
     //lobby 방 삭제, 체크버튼
+    @Operation(operationId = "roomCheck", summary = "게임방의 방장만 방 삭제버튼 activate 시키기",
+            description = "게임방의 방장만 방 삭제버튼을 누를 수 있어야 해서 방장인지 체크하는 메소드",
+            responses = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = @Content(
+                            schema = @Schema(type = "boolean", description = "방장인지 여부")
+                    )
+            ),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "로그인 되지 않은 상태에서의 요청 혹은 엑세스 토큰의 expire",
+                            content = @Content(
+                                    schema = @Schema(implementation = void.class)
+                            )
+                    )
+            }
+    )
     @GetMapping("/game/myRoom/{roomId}/{userId}")
     public boolean roomCheck(@PathVariable Long roomId, @PathVariable Long userId){
         return gameRoomService.roomDeleteButton(roomId, userId);
     }
 
-
+    @Operation(operationId = "roomDelete", summary = "게임방 삭제시키기",
+    description = "방장임을 검증 후 activate 된 삭제 버튼을 누르면 해당 방장의 id와 roomId를 받아서 삭제시키는 메소드",
+    responses = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = @Content(
+                            schema = @Schema(implementation = void.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "로그인 되지 않은 상태에서의 요청 혹은 엑세스 토큰의 expire",
+                    content = @Content(
+                            schema = @Schema(implementation = void.class)
+                    )
+            )
+    })
     @DeleteMapping("/game/room/delete/{roomId}/{userId}")
     public void roomDelete(@PathVariable Long roomId, @PathVariable Long userId){
 
