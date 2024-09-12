@@ -11,4 +11,6 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessageEntity, 
     // 특정 채팅방의 모든 메시지를 시간 순으로 조회
     List<ChatMessageEntity> findByChatRoomRoomIdOrderBySentAtAsc(Long chatRoomId);
 
+    //채팅 내역
+    void deleteByChatRoom(ChatRoomEntity chatRoom);
 }
